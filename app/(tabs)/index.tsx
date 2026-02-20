@@ -5,6 +5,9 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+// import { FontAwesome } from '@expo/vector-icons';
+// import { FontAwesome6 } from '@expo/vector-icons';
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
@@ -74,6 +77,28 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+      {/* <FontAwesome6 name="pix" size={24} color="white" />
+      <FontAwesome6 name="qrcode" size={24} color="white" />
+      <FontAwesome6 name="sistrix" size={24} color="white" />
+      <FontAwesome6 name="user" size={24} color="white" /> */}
+      {/* <FontAwesome5 name="dollar-sign" size={24} color="white" />
+      <FontAwesome5 name="qrcode" size={24} color="white" />
+      <FontAwesome5 name="key" size={24} color="white" />
+      <FontAwesome5 name="user" size={24} color="white" />
+      <FontAwesome5 name="trash" size={24} color="white" />
+      <FontAwesome5 name="search" size={24} color="white" />
+      <FontAwesome5 name="user-alt" size={24} color="white" />
+      <FontAwesome5 name="mobile-alt" size={24} color="white" />
+      <FontAwesome5 name="pix" size={24} color="white" /> */}
+      {/* <FontAwesome name="dollar" size={24} color="white" />
+      <FontAwesome name="qrcode" size={24} color="white" />
+      <FontAwesome name="money-bill-wave-alt" size={24} color="white" />
+      <FontAwesome name="bars" size={24} color="white" />
+      <FontAwesome name="key" size={24} color="white" /> */}
+      {/* <MaterialCommunityIcons name="qrcode-scan" size={24} color="white" />
+      <MaterialCommunityIcons name="currency-usd" size={24} color="white" />
+      <MaterialCommunityIcons name="menu" size={24} color="white" />
+      <MaterialCommunityIcons name="wallet" size={24} color="white" /> */}
     </ParallaxScrollView>
   );
 }

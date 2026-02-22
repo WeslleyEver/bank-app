@@ -19,7 +19,7 @@ export function TabButton({ children, style, ...props }: any) {
         style,
         {
           flex: 1,
-          justifyContent: "center",
+          // justifyContent: "center",'
           alignItems: "center",
         },
       ]}

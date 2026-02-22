@@ -1,6 +1,8 @@
+import { COLORS } from "@/src/theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SpinButton } from "../navigation/SpinButton";
 
 type HeaderProps = {
   title?: string;
@@ -12,42 +14,48 @@ export function Header({ title, subtitle }: HeaderProps) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => router.push("/user")}
-        style={[styles.topRow, styles.borders]}
+      <View style={styles.box}>
+        <TouchableOpacity
+          onPress={() => router.push("/user")}
+          style={[styles.borders]}
+        >
+          <View>
+            <Ionicons name="person" size={18} color={COLORS.lightcolor} />
+          </View>
+        </TouchableOpacity>
+        <View>
+          {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+          {/* {title && <Text style={styles.title}>{title}</Text>} */}
+        </View>
+      </View>
+      <SpinButton
+        style={styles.boxsettings}
+        onPress={() => router.push("/settings/settings")}
       >
         <View>
-          <Ionicons name="person" size={24} color="#FFF" />
+          <Ionicons name="settings-sharp" size={18} color={COLORS.lightcolor} />
         </View>
-      </TouchableOpacity>
-
-      {/* <View>
-        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
-        {title && <Text style={styles.title}>{title}</Text>}
-      </View> */}
+      </SpinButton>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     height: 120,
-    backgroundColor: "#EB0459",
-    justifyContent: "flex-end",
+    flexDirection: "row",
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
     paddingBottom: 16,
-  },
-  topRow: {
-    position: "absolute",
-    top: 50,
-    left: 20,
+    paddingTop: 50,
+    gap: 14,
   },
   title: {
-    color: "#FFFFFF",
+    color: COLORS.textPrimary,
     fontSize: 20,
     fontWeight: "600",
   },
   subtitle: {
-    color: "#FFFFFF",
+    color: COLORS.textPrimary,
     fontSize: 14,
     opacity: 0.8,
   },
@@ -58,5 +66,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#20010d21",
     justifyContent: "center",
     alignItems: "center",
+  },
+  box: {
+    alignItems: "center",
+    gap: 8,
+    flexDirection: "row",
+    flex: 1,
+  },
+  boxsettings: {
+    alignItems: "center",
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });

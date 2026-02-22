@@ -55,6 +55,8 @@ Join our community of developers creating universal apps.
 
 Instalar:
 
+npm install lottie-react-native
+
 npx expo install expo-camera
 
 Após instalar:

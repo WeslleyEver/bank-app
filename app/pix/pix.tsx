@@ -1,9 +1,11 @@
+import Loading from "@/components/loadings/Animations";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function PixScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Configuraçoes</Text>
+      <Loading type="success"></Loading>
     </View>
   );
 }

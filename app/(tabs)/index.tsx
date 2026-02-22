@@ -1,5 +1,6 @@
 // import HomeHeader from "";
 import HomeHeader from "@/components/layout/HomeHeader";
+import Loading from "@/components/loadings/Animations";
 import { COLORS } from "@/src/theme/colors";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -13,6 +14,7 @@ export default function HomeScreen() {
           <Text style={[TYPOGRAPHY.title, styles.sp]}>
             Soluções Financeiras
           </Text>
+          <Loading type="pay" loop></Loading>
         </ScrollView>
       </View>
     </View>

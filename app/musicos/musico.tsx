@@ -1,9 +1,12 @@
+import Loading from "@/components/loadings/Animations";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function MusicoScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Configuraçoes</Text>
+      <Loading type="metronome" loop></Loading>
+      <Loading type="metronome" loop></Loading>
     </View>
   );
 }

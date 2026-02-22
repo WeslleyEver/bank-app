@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function SesttingsScreen() {
+export default function SuporteScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Configuraçoes</Text>
+      <Text style={styles.title}>Suporte</Text>
     </View>
   );
 }

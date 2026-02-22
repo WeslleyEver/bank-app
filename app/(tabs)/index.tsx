@@ -1,4 +1,5 @@
-import HomeHeader from "@/components/HomeHeader";
+// import HomeHeader from "";
+import HomeHeader from "@/components/layout/HomeHeader";
 import { COLORS } from "@/src/theme/colors";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 import { ScrollView, StyleSheet, Text, View } from "react-native";

@@ -1,8 +1,7 @@
 import { COLORS } from "@/src/theme/colors";
-import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
 import { router } from "expo-router";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import HeaderBtn from "./navigation/HeaderBtnsroutes";
 // import { TabButton } from "./navigation/TabButton";
 
@@ -14,24 +13,24 @@ export default function HomeHeader() {
         <Text style={styles.value}>R$ 12.540,90</Text>
 
         <View style={styles.wrapper}>
-          <HeaderBtn icon="logo-wechat" label="Suporte" />
-          <HeaderBtn icon="barcode-outline" label="Contas" />
-          <HeaderBtn icon="pix" library="fa6" label="Área Pix" />
-          <Pressable onPress={() => router.push("/settings/settings")}>
+          <TouchableOpacity onPress={() => router.push("/suporte/suporte")}>
+            <HeaderBtn icon="logo-wechat" label="Suporte" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push("/contas/contas")}>
+            <HeaderBtn icon="barcode-outline" label="Contas" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push("/pix/pix")}>
+            <HeaderBtn icon="pix" library="fa6" label="Área Pix" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push("/musicos/musico")}>
             <HeaderBtn icon="guitar" library="fa6" label="Músicos" animate />
-          </Pressable>
-          {/* <TabButton onPress={() => router.push("/settings/settings")}>
-            <HeaderBtn icon="guitar" library="fa6" label="Músicos" animate />
-          </TabButton> */}
+          </TouchableOpacity>
         </View>
       </View>
     </View>
-    //     {/* <Pressable
-    //       style={styles.button}
-    //       onPress={() => router.push("/pix/confirm")}
-    //     >
-    //       <Text style={styles.buttonText}>Ir para teste Pix</Text>
-    //     </Pressable> */}
   );
 }
 const styles = StyleSheet.create({

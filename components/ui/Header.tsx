@@ -1,8 +1,10 @@
 import { COLORS } from "@/src/theme/colors";
+import { TYPOGRAPHY } from "@/src/theme/typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SpinButton } from "../navigation/SpinButton";
+import { RipplePress } from "./RipplePress";
 
 type HeaderProps = {
   title?: string;
@@ -15,14 +17,14 @@ export function Header({ title, subtitle }: HeaderProps) {
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        <TouchableOpacity
+        <RipplePress
           onPress={() => router.push("/user")}
           style={[styles.borders]}
         >
           <View>
             <Ionicons name="person" size={18} color={COLORS.lightcolor} />
           </View>
-        </TouchableOpacity>
+        </RipplePress>
         <View>
           {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           {/* {title && <Text style={styles.title}>{title}</Text>} */}
@@ -56,8 +58,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: COLORS.textPrimary,
-    fontSize: 14,
-    opacity: 0.8,
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
   },
   borders: {
     width: 46,

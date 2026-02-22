@@ -19,8 +19,9 @@ export default function TabLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header subtitle="Olá, Weslley 👋" title="Bem-vindo ao Banco" />
+      <Header subtitle="Olá, Weslley" />
       <Tabs
+        initialRouteName="index"
         screenOptions={{
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: COLORS.textPrimary,

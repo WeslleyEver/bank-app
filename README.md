@@ -59,6 +59,10 @@ npm install lottie-react-native
 
 npx expo install expo-camera
 
+npx expo install expo-navigation-bar
+
+npx expo install expo-system-ui
+
 Após instalar:
 
 npx expo start -c

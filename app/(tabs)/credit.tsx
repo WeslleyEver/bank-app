@@ -9,7 +9,7 @@ export default function Credit() {
     <View style={styles.container}>
       <Text style={TYPOGRAPHY.title}>Emprestimos</Text>
       <View style={styles.wrapper}>
-        <Loading type="pay" size={250}></Loading>
+        <Loading type="pay" size={250} loop></Loading>
       </View>
     </View>
   );
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
   title: {
-    // fontSize: TYPOGRAPHY.title.,
     color: "#000",
   },
 });

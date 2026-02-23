@@ -12,7 +12,7 @@ export const TYPOGRAPHY = {
     fontWeight: "400" as const,
   },
   caption: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "400" as const,
   },
 };

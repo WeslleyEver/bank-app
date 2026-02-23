@@ -90,7 +90,7 @@ export default function TabLayout() {
                     scale.value = withTiming(1.04, { duration: 100 });
                   }}
                   style={{
-                    top: -20,
+                    top: -18,
                     justifyContent: "center",
                     alignItems: "center",
                   }}

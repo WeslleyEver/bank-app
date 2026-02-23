@@ -1,5 +1,6 @@
-import Loading from "@/components/loadings/Animations";
+// import Loading from "@/components/loadings/Animations";
 import { StyleSheet, Text, View } from "react-native";
+import Loading from "../features/components/animations/Animations";
 
 export default function PixScreen() {
   return (

@@ -1,5 +1,3 @@
-// import HomeHeader from "";
-// import HomeHeader from "@/components/layout/HomeHeader";
 import Button from "@/components/layout/home/components/Button";
 import { PromoCarousel } from "@/components/layout/home/components/Carousel";
 import HomeHeader from "@/components/layout/home/components/HomeHeader";
@@ -8,9 +6,11 @@ import { COLORS } from "@/src/theme/colors";
 import { RADIUS } from "@/src/theme/radius";
 import { SPACING } from "@/src/theme/spacing";
 import { TYPOGRAPHY } from "@/src/theme/typography";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ActivityItem from "../features/transactions/components/ActivityItem";
 
 export default function HomeScreen() {
   /**
@@ -65,25 +65,25 @@ export default function HomeScreen() {
       id: "2",
       title: "Bean Music",
       image: "https://via.placeholder.com/150",
-      actionText: "Participar",
+      actionText: "Saiba mais",
     },
     {
       id: "3",
       title: "VY-B",
       image: "https://via.placeholder.com/150",
-      actionText: "Participar",
+      actionText: "Saiba mais",
     },
     {
       id: "4",
       title: "Engage",
       image: "https://via.placeholder.com/150",
-      actionText: "Participar",
+      actionText: "Saiba mais",
     },
     {
       id: "5",
       title: "GY",
       image: "https://via.placeholder.com/150",
-      actionText: "Participar",
+      actionText: "Saiba mais",
     },
   ];
   return (
@@ -92,7 +92,7 @@ export default function HomeScreen() {
       <View style={styles.wrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={[TYPOGRAPHY.title, styles.title]}>
-            BP Soluções Financeiras
+            Best Play
           </Text>
           <View style={styles.cardemprestimo}>
             <Text style={TYPOGRAPHY.subtitle}>Empréstimos até R$ 5.000,00</Text>
@@ -102,26 +102,14 @@ export default function HomeScreen() {
             ></Button>
           </View>
           <Text style={[TYPOGRAPHY.subtitle, styles.title]}>Histórico</Text>
-          {/* substituir flatlist */}
-          <FlatList
-            data={lastThree}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.historycard}>
-                <View>
-                  <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.description}>{item.description}</Text>
-                </View>
+          {/* onpress para o historico de transaçoes */}
+          <TouchableOpacity>
+            <Text style={[styles.linktitle]}>Ver todos<Ionicons name="arrow-redo-sharp" size={13} /></Text>
+          </TouchableOpacity>
 
-                <View style={{ alignItems: "flex-end" }}>
-                  <Text style={styles.amount}>
-                    - R${Math.abs(item.amount).toFixed(2)}
-                  </Text>
-                  <Text style={styles.date}>{item.date}</Text>
-                </View>
-              </View>
-            )}
-          />
+          {lastThree.map((item) => (
+            <ActivityItem key={item.id} item={item} />
+          ))}
           <View>
             <Text style={[TYPOGRAPHY.subtitle, styles.title]}>
               Conheça o Grupo
@@ -203,4 +191,11 @@ const styles = StyleSheet.create({
     color: "#777",
     marginTop: 4,
   },
+  linktitle: {
+    // gap: 18,
+    marginVertical: SPACING.sm,
+    marginLeft: SPACING.md,
+    fontWeight: "bold",
+    color: COLORS.primary,
+  }
 });

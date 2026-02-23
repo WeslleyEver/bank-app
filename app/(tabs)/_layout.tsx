@@ -35,6 +35,16 @@ export default function TabLayout() {
           },
         }}
       >
+
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons size={size - 6} name="home" color={color} />
+            ),
+          }}
+        />
         <Tabs.Screen
           name="account"
           options={{
@@ -45,20 +55,6 @@ export default function TabLayout() {
                 size={size - 6}
                 color={color}
                 style={{ flex: 1, left: 3, top: 4 }}
-              />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="credit"
-          options={{
-            title: "Crédito",
-            tabBarIcon: ({ color, size }) => (
-              <FontAwesome6
-                name="hand-holding-dollar"
-                size={size - 6}
-                color={color}
               />
             ),
           }}
@@ -124,6 +120,22 @@ export default function TabLayout() {
         />
 
         <Tabs.Screen
+          name="credit"
+          options={{
+            title: "Crédito",
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome6
+                name="hand-holding-dollar"
+                size={size - 6}
+                color={color}
+              />
+            ),
+          }}
+        />
+
+
+
+        <Tabs.Screen
           name="cards"
           options={{
             title: "Cartões",
@@ -142,15 +154,7 @@ export default function TabLayout() {
           }}
         />
 
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: "Home",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons size={size - 6} name="home" color={color} />
-            ),
-          }}
-        />
+
       </Tabs>
     </View>
   );

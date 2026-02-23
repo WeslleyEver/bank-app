@@ -1,8 +1,8 @@
 import {
-	withDelay,
-	withRepeat,
-	withSequence,
-	withTiming,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
 } from "react-native-reanimated";
 
 export const shakeAnimation = (delay = 2000) => {

@@ -1,8 +1,9 @@
-import Loading from "@/components/loadings/Animations";
+// import Loading from "@/components/loadings/Animations";
 import { COLORS } from "@/src/theme/colors";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Loading from "../features/components/animations/Animations";
 
 export default function Credit() {
   return (

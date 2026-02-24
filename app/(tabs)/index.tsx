@@ -9,8 +9,15 @@ import { TYPOGRAPHY } from "@/src/theme/typography";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import ActivityItem from "../features/transactions/components/ActivityItem";
+import { useTransactions } from "../features/transactions/hooks/useTransactions";
 
 export default function HomeScreen() {
   /**
@@ -22,37 +29,38 @@ export default function HomeScreen() {
    *  troca o mock pela API
       e deixar a lista limpa: <ActivityItem item={item} />
    */
-  const activities = [
-    {
-      id: "1",
-      name: "Weslley Everton Jesus Santos",
-      description: "Pix enviado",
-      amount: -7,
-      date: "20/fev",
-    },
-    {
-      id: "2",
-      name: "99 Tecnologia Ltda",
-      description: "Pagamento com Pix",
-      amount: -12.8,
-      date: "20/fev",
-    },
-    {
-      id: "3",
-      name: "99 Tecnologia Ltda",
-      description: "Pagamento com Pix",
-      amount: -11.4,
-      date: "19/fev",
-    },
-    {
-      id: "4",
-      name: "Mercado Livre",
-      description: "Compra online",
-      amount: -89.9,
-      date: "18/fev",
-    },
-  ];
-  const lastThree = activities.slice(0, 3);
+  // const activities = [
+  //   {
+  //     id: "1",
+  //     name: "Weslley Everton",
+  //     description: "Pix enviado",
+  //     amount: -7500,
+  //     date: "20/fev",
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "99 Tecnologia Ltda",
+  //     description: "Pagamento com Pix",
+  //     amount: -12.8,
+  //     date: "20/fev",
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "99 Tecnologia Ltda",
+  //     description: "Pagamento com Pix",
+  //     amount: -11.4,
+  //     date: "19/fev",
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "Mercado Livre",
+  //     description: "Compra online",
+  //     amount: -89.9,
+  //     date: "18/fev",
+  //   },
+  // ];
+
+  const { lastThree } = useTransactions();
 
   const mockPromos = [
     {
@@ -91,9 +99,7 @@ export default function HomeScreen() {
       <HomeHeader />
       <View style={styles.wrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={[TYPOGRAPHY.title, styles.title]}>
-            Best Play
-          </Text>
+          <Text style={[TYPOGRAPHY.title, styles.title]}>Best Play</Text>
           <View style={styles.cardemprestimo}>
             <Text style={TYPOGRAPHY.subtitle}>Empréstimos até R$ 5.000,00</Text>
             <Button
@@ -103,8 +109,11 @@ export default function HomeScreen() {
           </View>
           <Text style={[TYPOGRAPHY.subtitle, styles.title]}>Histórico</Text>
           {/* onpress para o historico de transaçoes */}
-          <TouchableOpacity>
-            <Text style={[styles.linktitle]}>Ver todos<Ionicons name="arrow-redo-sharp" size={13} /></Text>
+          <TouchableOpacity onPress={() => router.push("/transactions")}>
+            <Text style={[styles.linktitle]}>
+              Ver todos
+              <Ionicons name="arrow-redo-sharp" size={13} />
+            </Text>
           </TouchableOpacity>
 
           {lastThree.map((item) => (
@@ -192,10 +201,9 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   linktitle: {
-    // gap: 18,
     marginVertical: SPACING.sm,
     marginLeft: SPACING.md,
     fontWeight: "bold",
     color: COLORS.primary,
-  }
+  },
 });

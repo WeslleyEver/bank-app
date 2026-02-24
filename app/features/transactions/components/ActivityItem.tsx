@@ -1,6 +1,8 @@
 import { SPACING } from "@/src/theme/spacing";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
+import { Transaction } from "../types";
+
 // import Ripple from "react-native-material-ripple";
 /**
  * ------------------------------------------------------------------
@@ -52,55 +54,51 @@ import { StyleSheet, Text, View } from "react-native";
  */
 
 type Props = {
-  item: {
-    name: string;
-    description: string;
-    amount: number;
-    date: string;
-  };
+  item: Transaction;
 };
 
 export default function ActivityItem({ item }: Props) {
+  const iconMap = {
+    pix: <FontAwesome6 name="pix" size={20} color="#32BCAD" />,
+    ted: <FontAwesome6 name="building-columns" size={20} color="#302c2e" />,
+    doc: <FontAwesome6 name="building-columns" size={20} color="#302c2e" />,
+  };
+
+  const dateObj = new Date(item.date);
+  const formattedDate = `${dateObj.getDate()}/${dateObj.toLocaleString(
+    "pt-BR",
+    { month: "short" },
+  )}`;
+
   const isNegative = item.amount < 0;
 
+  const transactionTypeLabel = item.type.toUpperCase();
+
+  const description = `${transactionTypeLabel} ${
+    isNegative ? "enviado" : "recebido"
+  }`;
   return (
     /**
      * Lembrar de configurar o Riplepress
      */
 
     <View style={styles.container}>
-
-
       <View style={[styles.row]}>
-
-
-
-        <View style={styles.icon}>
-          <Ionicons
-            size={20}
-            name="bag-handle-outline"
-            color="#000"
-          />
-        </View>
+        <View style={styles.icon}>{iconMap[item.type]}</View>
         <View>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.description}>{item.description}</Text>
+          <Text style={styles.description}>{description}</Text>
         </View>
-
       </View>
 
       <View style={{ alignItems: "flex-end" }}>
-
         <Text
-          style={[
-            styles.amount,
-            { color: isNegative ? "#E53935" : "#2E7D32" },
-          ]}
+          style={[styles.amount, { color: isNegative ? "#E53935" : "#2E7D32" }]}
         >
           {isNegative ? "-" : "+"} R$
           {Math.abs(item.amount).toFixed(2)}
         </Text>
-        <Text style={styles.date}>{item.date}</Text>
+        <Text style={styles.date}>{formattedDate}</Text>
       </View>
     </View>
   );
@@ -108,12 +106,12 @@ export default function ActivityItem({ item }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    borderBottomWidth: 1,
+    borderColor: "#f1f1f1",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: SPACING.md,
+    paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.xl,
-    // borderBottomWidth: 1,
-    // borderColor: "#eee",
   },
   name: {
     fontWeight: "600",
@@ -130,16 +128,16 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: "center",
     alignItems: "center",
-    width: 42,
-    height: 42,
+    width: 48,
+    height: 48,
     padding: 5,
-    borderRadius: 21,
+    borderRadius: 24,
     backgroundColor: "#00000018",
   },
   row: {
     alignItems: "center",
     gap: SPACING.md,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   date: {
     color: "#777",

@@ -28,14 +28,13 @@ export default function TabLayout() {
           headerShown: false,
           tabBarButton: (props) => <TabButton {...props} />,
           tabBarStyle: {
-            height: 58 + insets.bottom,
+            height: 52 + insets.bottom,
             paddingBottom: insets.bottom,
             paddingTop: 4,
             backgroundColor: COLORS.tabbar,
           },
         }}
       >
-
         <Tabs.Screen
           name="index"
           options={{
@@ -86,7 +85,7 @@ export default function TabLayout() {
                     scale.value = withTiming(1.04, { duration: 100 });
                   }}
                   style={{
-                    top: -18,
+                    top: -15,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -94,11 +93,11 @@ export default function TabLayout() {
                   <Animated.View
                     style={[
                       {
-                        width: 66,
-                        height: 66,
+                        width: 68,
+                        height: 68,
                         borderWidth: 6,
                         borderColor: COLORS.tabbar,
-                        borderRadius: 33,
+                        borderRadius: 34,
                         backgroundColor: COLORS.primary,
                         justifyContent: "center",
                         alignItems: "center",
@@ -133,8 +132,6 @@ export default function TabLayout() {
           }}
         />
 
-
-
         <Tabs.Screen
           name="cards"
           options={{
@@ -153,8 +150,6 @@ export default function TabLayout() {
             ),
           }}
         />
-
-
       </Tabs>
     </View>
   );

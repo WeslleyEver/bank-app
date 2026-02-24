@@ -1,8 +1,9 @@
 import { COLORS } from "@/src/theme/colors";
+import { SPACING } from "@/src/theme/spacing";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SpinButton } from "../navigation/SpinButton";
 import { RipplePress } from "./RipplePress";
 
@@ -30,14 +31,29 @@ export function Header({ title, subtitle }: HeaderProps) {
           {/* {title && <Text style={styles.title}>{title}</Text>} */}
         </View>
       </View>
-      <SpinButton
-        style={styles.boxsettings}
-        onPress={() => router.push("/settings/settings")}
-      >
-        <View>
-          <Ionicons name="settings-sharp" size={18} color={COLORS.lightcolor} />
-        </View>
-      </SpinButton>
+      <View style={styles.boxs}>
+        <SpinButton
+          style={styles.boxsettings}
+          onPress={() => router.push("/settings/settings")}
+        >
+          <View>
+            <Ionicons
+              name="settings-sharp"
+              size={SPACING.xl}
+              color={COLORS.lightcolor}
+            />
+          </View>
+        </SpinButton>
+        <TouchableOpacity style={styles.boxsettings}>
+          <View>
+            <Ionicons
+              name="notifications"
+              size={SPACING.xl}
+              color={COLORS.lightcolor}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -75,9 +91,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   boxsettings: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     alignItems: "center",
     flexDirection: "row",
-    flex: 1,
+    justifyContent: "center",
+  },
+  boxs: {
+    alignItems: "center",
+    flexDirection: "row",
     justifyContent: "flex-end",
+    gap: SPACING.sm,
   },
 });

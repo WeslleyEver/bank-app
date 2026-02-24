@@ -24,15 +24,20 @@ export default function RootLayout() {
     async function setup() {
       await SystemUI.setBackgroundColorAsync(COLORS.tabbar);
       await NavigationBar.setBackgroundColorAsync(COLORS.tabbar);
-      await NavigationBar.setButtonStyleAsync("light");
+      await NavigationBar.setButtonStyleAsync("dark");
     }
-
     setup();
   }, []);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"

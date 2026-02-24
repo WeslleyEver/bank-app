@@ -47,7 +47,7 @@ export default function HomeHeader() {
             <HeaderBtn icon="logo-wechat" label="Suporte" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/contas/contas")}>
+          <TouchableOpacity onPress={() => router.push("/transactions")}>
             <HeaderBtn icon="barcode-outline" label="Contas" />
           </TouchableOpacity>
 

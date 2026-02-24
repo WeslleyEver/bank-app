@@ -52,15 +52,15 @@ export default function HeaderBtn({
   const IconComponent = library === "ion" ? Ionicons : FontAwesome6;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.btn}>
-        <Animated.View style={animate ? animatedStyle : undefined}>
+    <Animated.View style={animate ? animatedStyle : undefined}>
+      <View style={styles.container}>
+        <View style={styles.btn}>
           <IconComponent size={22} name={icon as any} color={COLORS.primary} />
-        </Animated.View>
-      </View>
+        </View>
 
-      <Text style={styles.label}>{label}</Text>
-    </View>
+        <Text style={styles.label}>{label}</Text>
+      </View>
+    </Animated.View>
   );
 }
 

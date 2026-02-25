@@ -31,9 +31,13 @@ export function PromoCard({ item, index, scrollX }: Props) {
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.title}</Text>
         {item.actionText && (
-          <TouchableOpacity>
-            <Text style={styles.action}>{item.actionText} →</Text>
-          </TouchableOpacity>
+          <View>
+            <Text style={styles.desc}>{item.description}</Text>
+            <TouchableOpacity>
+              <Text style={styles.action}>{item.actionText} →</Text>
+            </TouchableOpacity>
+          </View>
+
         )}
       </View>
     </ImageBackground>

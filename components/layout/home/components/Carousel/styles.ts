@@ -1,3 +1,4 @@
+import { COLORS } from "@/src/theme/colors";
 import { RADIUS } from "@/src/theme/radius";
 import { SHADOWS } from "@/src/theme/shadows";
 import { SPACING } from "@/src/theme/spacing";
@@ -29,14 +30,21 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#fff",
+    color: COLORS.lightcolor,
     marginBottom: 12,
   },
 
   action: {
+    marginTop: 20,
     fontSize: 14,
     fontWeight: "600",
-    color: "#1A1A1A",
+    color: COLORS.lightcolor,
+  },
+
+  desc: {
+    fontSize: 14,
+    // fontWeight: "600",
+    color: COLORS.lightcolor,
   },
 
   image: {

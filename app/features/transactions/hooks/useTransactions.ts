@@ -98,6 +98,13 @@ const mockTransactions: Transaction[] = [
     amount: -500,
     date: "2026-02-22T07:02:00.000Z",
   },
+  {
+    id: "9",
+    name: "Erick Roza",
+    type: "pix",
+    amount: 5000,
+    date: "2026-02-24T09:02:00.000Z",
+  },
   // ...
 ];
 

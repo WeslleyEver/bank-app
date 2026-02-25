@@ -66,32 +66,37 @@ export default function HomeScreen() {
     {
       id: "1",
       title: "Best Play",
-      image: require("@/assets/images/hero-back.png"),
+      image: require("@/assets/images/bg-best.png"),
       actionText: "Saiba mais",
+      description: "Nossa missão é democratizar o acesso à audiência, conectando músicas a ouvintes reais por meio de soluções de curadoria de playlists, gestão de tráfego pago, estratégias de lançamento e educação musical."
     },
     {
       id: "2",
       title: "Bean Music",
-      image: "https://via.placeholder.com/150",
+      image: require("@/assets/images/hero-back.png"),
+      description: "Lance, Promova e Monetize Suas Músicas em um Só Lugar! Conheça a nossa Startup e Distribuidora, a Bean Music.",
       actionText: "Saiba mais",
     },
     {
       id: "3",
       title: "VY-B",
-      image: "https://via.placeholder.com/150",
+      image: require("@/assets/images/bg-3.jpeg"),
       actionText: "Saiba mais",
+      description:"Crie e venda produtos com sua marca em uma plataforma integrada e pronta para escalar sua receita."
     },
     {
       id: "4",
       title: "Engage",
       image: "https://via.placeholder.com/150",
       actionText: "Saiba mais",
+      description: "Agência de marketing digital 5.0, movida por dados e insights, que une estratégia, performance e criatividade para gerar resultados reais com atendimento próximo, humano e eficiente."
     },
     {
       id: "5",
       title: "GY",
       image: "https://via.placeholder.com/150",
       actionText: "Saiba mais",
+      description: "15 anos de mercado, já trabalhamos com mais de 300 artistas de diferentes momentos da carreira, do inicial ao artista com gravadora."
     },
   ];
   return (

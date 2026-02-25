@@ -48,7 +48,7 @@ export default function HomeHeader() {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.push("/transactions")}>
-            <HeaderBtn icon="barcode-outline" label="Contas" />
+            <HeaderBtn icon="barcode-outline" label="Pagamentos" />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.push("/pix/pix")}>

@@ -1,21 +1,38 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { TabButton } from "@/components/navigation/TabButton";
+import { AnimatedTabIndicator } from "@/components/navigation/AnimatedTabIndicator";
 import { Header } from "@/components/ui/Header";
 import { COLORS } from "@/src/theme/colors";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { Tabs, useRouter } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { FloatingQrButton } from "@/components/navigation/FloatingQrButton";
+
+function TabBarButton({ children, style, ...props }: any) {
+  return (
+    <Pressable
+      {...props}
+      style={[
+        style,
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+      ]}
+    >
+      {children}
+    </Pressable>
+  );
+}
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+
+  const routesOrder = ["index", "account", "qrcode", "credit", "cards"];
+
+  const pathname = usePathname();
 
   return (
     <View style={{ flex: 1 }}>
@@ -24,14 +41,16 @@ export default function TabLayout() {
         initialRouteName="index"
         screenOptions={{
           tabBarActiveTintColor: COLORS.primary,
-          tabBarInactiveTintColor: COLORS.textPrimary,
+          tabBarInactiveTintColor: "#5c5b5b",
           headerShown: false,
-          tabBarButton: (props) => <TabButton {...props} />,
+          tabBarButton: (props) => <TabBarButton {...props} />,
           tabBarStyle: {
-            height: 52 + insets.bottom,
+            height: 54 + insets.bottom,
             paddingBottom: insets.bottom,
-            paddingTop: 4,
-            backgroundColor: COLORS.tabbar,
+            backgroundColor: COLORS.tabbarligth,
+            // borderWidth: 1,
+            borderTopWidth: 0,
+            // borderColor: COLORS.lightcolor,
           },
         }}
       >
@@ -62,59 +81,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="qrcode"
           options={{
-            title: "",
-            tabBarActiveTintColor: COLORS.primary,
-
-            tabBarButton: () => {
-              const scale = useSharedValue(1);
-
-              const animatedStyle = useAnimatedStyle(() => {
-                return {
-                  transform: [{ scale: scale.value }],
-                };
-              });
-              const router = useRouter();
-
-              return (
-                <Pressable
-                  onPress={() => router.push("/qr")}
-                  onPressIn={() => {
-                    scale.value = withTiming(0.96, { duration: 100 });
-                  }}
-                  onPressOut={() => {
-                    scale.value = withTiming(1.04, { duration: 100 });
-                  }}
-                  style={{
-                    top: -15,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Animated.View
-                    style={[
-                      {
-                        width: 68,
-                        height: 68,
-                        borderWidth: 6,
-                        borderColor: COLORS.tabbar,
-                        borderRadius: 34,
-                        backgroundColor: COLORS.primary,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        elevation: 8,
-                      },
-                      animatedStyle,
-                    ]}
-                  >
-                    <Ionicons
-                      name="qr-code"
-                      size={24}
-                      color={COLORS.background_white}
-                    />
-                  </Animated.View>
-                </Pressable>
-              );
-            },
+            tabBarButton: () => <FloatingQrButton colors={COLORS} />,
           }}
         />
 
@@ -151,6 +118,12 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
+      <AnimatedTabIndicator
+        pathname={pathname}
+        routes={routesOrder}
+        bottom={insets.bottom + 52}
+        color={COLORS.primary}
+      />
     </View>
   );
 }

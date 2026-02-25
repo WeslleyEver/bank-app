@@ -38,7 +38,7 @@
 
 import { useMemo } from "react";
 import { Transaction } from "../types";
-
+// import {  }
 export type TransactionType = "pix" | "ted" | "doc";
 
 const mockTransactions: Transaction[] = [

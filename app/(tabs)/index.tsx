@@ -2,6 +2,7 @@ import Button from "@/components/layout/home/components/Button";
 import { PromoCarousel } from "@/components/layout/home/components/Carousel";
 import HomeHeader from "@/components/layout/home/components/HomeHeader";
 
+import ActivityItem from "@/src/features/transactions/components/ActivityItem";
 import { COLORS } from "@/src/theme/colors";
 import { RADIUS } from "@/src/theme/radius";
 import { SPACING } from "@/src/theme/spacing";
@@ -16,8 +17,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import ActivityItem from "../features/transactions/components/ActivityItem";
-import { useTransactions } from "../features/transactions/hooks/useTransactions";
+// import { useTransactions } from "../features/transactions/hooks/useTransactions";
+import { useTransactions } from "@/src/features/transactions/hooks/useTransactions";
 
 export default function HomeScreen() {
   /**

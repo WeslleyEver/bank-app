@@ -66,7 +66,7 @@ export default function HomeScreen() {
     {
       id: "1",
       title: "Best Play",
-      image: "https://via.placeholder.com/150",
+      image: require("@/assets/images/hero-back.png"),
       actionText: "Saiba mais",
     },
     {

@@ -1,14 +1,33 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SharedValue } from "react-native-reanimated";
 import { styles } from "./styles";
 import { PromoItem } from "./types";
-
 interface Props {
   item: PromoItem;
+  index: number;
+  scrollX: SharedValue<number>;
 }
 
-export function PromoCard({ item }: Props) {
+export function PromoCard({ item, index, scrollX }: Props) {
   return (
-    <View style={styles.card}>
+    <ImageBackground
+      source={typeof item.image === "string" ? { uri: item.image } : item.image}
+      style={styles.card}
+      imageStyle={{ borderRadius: 24 }}
+    >
+      <View
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: "rgba(0,0,0,0.4)",
+          borderRadius: 24,
+        }}
+      />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.title}</Text>
         {item.actionText && (
@@ -17,8 +36,6 @@ export function PromoCard({ item }: Props) {
           </TouchableOpacity>
         )}
       </View>
-
-      <Image source={{ uri: item.image }} style={styles.image} />
-    </View>
+    </ImageBackground>
   );
 }

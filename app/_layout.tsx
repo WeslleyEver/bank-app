@@ -13,9 +13,9 @@ import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
+// export const unstable_settings = {
+//   anchor: "(tabs)",
+// };
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -38,12 +38,26 @@ export default function RootLayout() {
           },
         }}
       >
+        <Stack.Screen name="loading" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}
         />
       </Stack>
+
+      {/* <Stack
+        screenOptions={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+        }}
+      >
+        <Stack.Screen name="loading" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      </Stack> */}
 
       <StatusBar style="dark" />
     </ThemeProvider>

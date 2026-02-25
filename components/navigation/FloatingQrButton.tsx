@@ -3,9 +3,9 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable } from "react-native";
 import Animated, {
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 export function FloatingQrButton({ colors }: any) {
@@ -22,7 +22,7 @@ export function FloatingQrButton({ colors }: any) {
       onPressIn={() => (scale.value = withTiming(0.96, { duration: 100 }))}
       onPressOut={() => (scale.value = withTiming(1.04, { duration: 100 }))}
       style={{
-        top: 17,
+        top: 14,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -31,9 +31,9 @@ export function FloatingQrButton({ colors }: any) {
         style={[
           {
             position: "absolute",
-            width: 62,
-            height: 62,
-            borderRadius: 31,
+            width: 64,
+            height: 64,
+            borderRadius: 32,
             backgroundColor: colors.primary,
             justifyContent: "center",
             alignItems: "center",

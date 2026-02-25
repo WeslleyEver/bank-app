@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     height: 290,
     width: width - 24,
     marginHorizontal: SPACING.md,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.xxxl,
     marginTop: SPACING.md,
     backgroundColor: "#868585",
     borderRadius: RADIUS.xl,

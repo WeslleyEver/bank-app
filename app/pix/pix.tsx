@@ -1,12 +1,11 @@
-// import Loading from "@/components/loadings/Animations";
+import LottieAnimation from "@/src/shared/components/animations/LottieAnimation";
 import { StyleSheet, Text, View } from "react-native";
-import Loading from "../features/components/animations/Animations";
 
 export default function PixScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Configuraçoes</Text>
-      <Loading type="success"></Loading>
+      <LottieAnimation type="success"></LottieAnimation>
     </View>
   );
 }

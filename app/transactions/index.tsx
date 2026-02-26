@@ -1,5 +1,3 @@
-// histórico geral de transaçoes
-// Aqui sera a tela do pix lebrar de usar hooks, histórico filtrado pix
 import ActivityItem from "@/src/features/transactions/components/ActivityItem";
 import { useTransactions } from "@/src/features/transactions/hooks/useTransactions";
 import { COLORS } from "@/src/theme/colors";
@@ -15,12 +13,46 @@ import {
   View,
 } from "react-native";
 
+/**
+ * ------------------------------------------------------------------
+ * Screen: TransactionsScreen
+ * ------------------------------------------------------------------
+ *
+ * Tela responsável por exibir o histórico completo de transações.
+ *
+ * Camada: UI (Presentation Layer)
+ *
+ * Responsabilidades:
+ * - Renderizar lista de transações
+ * - Permitir filtragem por tipo (pix, ted, doc)
+ * - Consumir dados através do hook useTransactions
+ *
+ * Não deve:
+ * - Conter regra de negócio financeira
+ * - Atualizar stores diretamente
+ * - Fazer chamadas para services
+ *
+ * Arquitetura:
+ * Store → Hook (useTransactions) → Screen → Componentes visuais
+ *
+ * A tela apenas consome dados transformados pelo hook.
+ * Toda lógica de ordenação e filtro está isolada fora daqui.
+ *
+ * Observação:
+ * Caso novas modalidades sejam adicionadas,
+ * o filtro deve ser atualizado para refletir o novo tipo.
+ * ------------------------------------------------------------------
+ */
 export default function TransactionsScreen() {
   const [filter, setFilter] = useState<"all" | "pix" | "ted" | "doc">("all");
 
   const { transactions } = useTransactions(
     filter === "all" ? undefined : filter,
   );
+
+  //futuro
+  //import { TransactionType } from "@/src/features/transactions/types";
+  // type FilterType = "all" | TransactionType;
 
   return (
     <View style={styles.container}>
@@ -84,6 +116,15 @@ type FilterButtonProps = {
   active?: boolean;
 };
 
+/**
+ * Componente visual de botão de filtro.
+ *
+ * Responsável apenas por:
+ * - Exibir estado ativo/inativo
+ * - Disparar callback ao ser pressionado
+ *
+ * Não possui lógica de negócio.
+ */
 function FilterButton({ label, onPress, active }: FilterButtonProps) {
   return (
     <TouchableOpacity

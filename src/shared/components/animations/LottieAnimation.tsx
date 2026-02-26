@@ -18,7 +18,33 @@ const animations = {
   band: require("@/assets/animations/band.json"),
 };
 
-export default function Loading({
+/**
+ * ------------------------------------------------------------------
+ * Component: LottieAnimation
+ * ------------------------------------------------------------------
+ *
+ * Componente reutilizável para renderização de animações Lottie.
+ *
+ * Camada: Shared (UI base)
+ *
+ * Responsabilidades:
+ * - Renderizar animação baseada em tipo
+ * - Controlar play/reset ao focar na tela
+ * - Permitir controle de tamanho e loop
+ *
+ * Não deve:
+ * - Conter regra de negócio
+ * - Depender de features específicas
+ *
+ * Pode ser utilizado em:
+ * - Loading screens
+ * - Confirmação de pagamento
+ * - Tela de sucesso
+ * - Estados vazios
+ *
+ * ------------------------------------------------------------------
+ */
+export default function LottieAnimation({
   type = "metronome",
   size = 150,
   loop = false,

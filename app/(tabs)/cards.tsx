@@ -1,5 +1,5 @@
-import Loading from "@/components/loadings/Animations";
-import { pixService } from "@/src/features/pix/services/pix.service";
+import { sendPixUseCase } from "@/src/features/pix/useCases/sendPix.useCase";
+import LottieAnimation from "@/src/shared/components/animations/LottieAnimation";
 import { COLORS } from "@/src/theme/colors";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 
@@ -7,20 +7,19 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Cards() {
+  async function handleConfirm() {
+    try {
+      await sendPixUseCase("Trasferencia Teste", 200);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={TYPOGRAPHY.title}>Em Breve!</Text>
 
-      <Loading type="card" size={300}></Loading>
-      <TouchableOpacity
-        onPress={async () => {
-          await pixService.sendPix({
-            name: "Banco SAFRA",
-            amount: 100,
-            type: "pix",
-          });
-        }}
-      >
+      <LottieAnimation type="card" size={300}></LottieAnimation>
+      <TouchableOpacity style={styles.borders} onPress={handleConfirm}>
         <Text>Enviar Pix Teste</Text>
       </TouchableOpacity>
     </View>
@@ -44,20 +43,10 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
   title: {
-    // fontSize: TYPOGRAPHY.title.,
     color: "#000",
   },
+  borders: {
+    padding: 15,
+    borderWidth: 1,
+  },
 });
-
-// const styles = StyleSheet.create({
-//   headerImage: {
-//     color: '#808080',
-//     bottom: -90,
-//     left: -35,
-//     position: 'absolute',
-//   },
-//   titleContainer: {
-//     flexDirection: 'row',
-//     gap: 8,
-//   },
-// });

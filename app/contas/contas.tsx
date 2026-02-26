@@ -1,11 +1,11 @@
-import Loading from "@/components/loadings/Animations";
+import LottieAnimation from "@/src/shared/components/animations/LottieAnimation";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function ContasScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Configuraçoes</Text>
-      <Loading type="disc" loop></Loading>
+      <LottieAnimation type="disc" loop></LottieAnimation>
     </View>
   );
 }

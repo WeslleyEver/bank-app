@@ -2,6 +2,26 @@ import { useEffect, useMemo } from "react";
 import { useTransactionStore } from "../store/useTransactionStore";
 import { TransactionType } from "../types";
 
+/**
+ * ------------------------------------------------------------------
+ * Hook: useTransactions
+ * ------------------------------------------------------------------
+ *
+ * Responsabilidade:
+ * Fornecer transações organizadas para a UI.
+ *
+ * Faz:
+ * - Ordenação por data (mais recente primeiro)
+ * - Filtro por tipo (pix, ted, doc)
+ * - Seleção das últimas 3 transações
+ *
+ * Não faz:
+ * - Não busca dados diretamente da API
+ * - Não altera store
+ *
+ * Apenas transforma dados para exibição.
+ * ------------------------------------------------------------------
+ */
 export function useTransactions(filter?: TransactionType) {
   const { transactions, loadTransactions } = useTransactionStore();
 

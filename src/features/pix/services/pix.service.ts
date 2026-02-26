@@ -1,30 +1,33 @@
-import { mockTransactions } from "../../transactions/mock";
+import { useBalanceStore } from "../../account/store/useBalanceStore";
+import { useTransactionStore } from "../../transactions/store/useTransactionStore";
 import { Transaction } from "../../transactions/types";
+import { SendPixDTO } from "../types";
 
 export const pixService = {
-  async getTransactions(): Promise<Transaction[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockTransactions);
-      }, 500);
-    });
+  async sendPix(data: SendPixDTO): Promise<Transaction> {
+    const balanceStore = useBalanceStore.getState();
+    const transactionStore = useTransactionStore.getState();
+
+    // 🔎 Validação
+    if (data.amount > balanceStore.balance) {
+      throw new Error("Saldo insuficiente");
+    }
+
+    // 🧾 Criar nova transação
+    const newTransaction: Transaction = {
+      id: String(Date.now()),
+      name: data.name,
+      type: "pix",
+      amount: -Math.abs(data.amount), // sempre negativo (envio)
+      date: new Date().toISOString(),
+    };
+
+    // 💰 Atualiza saldo
+    balanceStore.withdraw(data.amount);
+
+    // 📜 Atualiza lista de transações
+    transactionStore.addTransaction(newTransaction);
+
+    return newTransaction;
   },
 };
-
-// import { useTransactionStore } from "../../transactions/store/useTransactionStore";
-
-// export const pixService = {
-//   async sendPix(data) {
-//     const newTransaction = {
-//       id: String(Date.now()),
-//       ...data,
-//       date: new Date().toISOString(),
-//     };
-
-//     useTransactionStore.getState().addTransaction(newTransaction);
-
-//     return newTransaction;
-//   },
-// };
-
-

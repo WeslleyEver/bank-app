@@ -1,9 +1,10 @@
 import Loading from "@/components/loadings/Animations";
+import { pixService } from "@/src/features/pix/services/pix.service";
 import { COLORS } from "@/src/theme/colors";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Cards() {
   return (
@@ -11,6 +12,17 @@ export default function Cards() {
       <Text style={TYPOGRAPHY.title}>Em Breve!</Text>
 
       <Loading type="card" size={300}></Loading>
+      <TouchableOpacity
+        onPress={async () => {
+          await pixService.sendPix({
+            name: "Banco SAFRA",
+            amount: 100,
+            type: "pix",
+          });
+        }}
+      >
+        <Text>Enviar Pix Teste</Text>
+      </TouchableOpacity>
     </View>
   );
 }

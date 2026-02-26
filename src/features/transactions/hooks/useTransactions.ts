@@ -1,26 +1,21 @@
-import { Transaction, TransactionType } from "@/src/features/transactions/types";
-import { useEffect, useMemo, useState } from "react";
-import { transactionService } from "../services/transaction.service";
+import { useEffect, useMemo } from "react";
+import { useTransactionStore } from "../store/useTransactionStore";
+import { TransactionType } from "../types";
 
 export function useTransactions(filter?: TransactionType) {
-  const [data, setData] = useState<Transaction[]>([]);
+  const { transactions, loadTransactions } = useTransactionStore();
 
   useEffect(() => {
-    async function load() {
-      const transactions = await transactionService.getTransactions();
-      setData(transactions);
-    }
-
-    load();
+    loadTransactions();
   }, []);
 
   const orderedTransactions = useMemo(() => {
-    return [...data].sort(
+    return [...transactions].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
-  }, [data]);
+  }, [transactions]);
 
-  const transactions = useMemo(() => {
+  const filtered = useMemo(() => {
     if (!filter) return orderedTransactions;
     return orderedTransactions.filter((t) => t.type === filter);
   }, [filter, orderedTransactions]);
@@ -30,7 +25,7 @@ export function useTransactions(filter?: TransactionType) {
   }, [orderedTransactions]);
 
   return {
-    transactions,
+    transactions: filtered,
     lastThree,
   };
 }

@@ -1,23 +1,31 @@
-// import { create } from "zustand";
-// import { Transaction } from "../types";
-// import { transactionService } from "../services/transaction.service";
+import { create } from "zustand";
+import { transactionService } from "../services/transaction.service";
+import { Transaction } from "../types";
 
-// type TransactionState = {
-//   transactions: Transaction[];
-//   loadTransactions: () => Promise<void>;
-//   addTransaction: (transaction: Transaction) => void;
-// };
+type TransactionState = {
+  transactions: Transaction[];
+  hasLoaded: boolean;
+  loadTransactions: () => Promise<void>;
+  addTransaction: (transaction: Transaction) => void;
+};
 
-// export const useTransactionStore = create<TransactionState>((set) => ({
-//   transactions: [],
+export const useTransactionStore = create<TransactionState>()((set, get) => ({
+  transactions: [],
+  hasLoaded: false,
 
-//   loadTransactions: async () => {
-//     const data = await transactionService.getTransactions();
-//     set({ transactions: data });
-//   },
+  loadTransactions: async () => {
+    if (get().hasLoaded) return;
 
-//   addTransaction: (transaction) =>
-//     set((state) => ({
-//       transactions: [transaction, ...state.transactions],
-//     })),
-// }));
+    const data = await transactionService.getTransactions();
+
+    set({
+      transactions: data,
+      hasLoaded: true,
+    });
+  },
+
+  addTransaction: (transaction: Transaction) =>
+    set((state) => ({
+      transactions: [transaction, ...state.transactions],
+    })),
+}));

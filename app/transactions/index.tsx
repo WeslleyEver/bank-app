@@ -1,5 +1,7 @@
 // histórico geral de transaçoes
 // Aqui sera a tela do pix lebrar de usar hooks, histórico filtrado pix
+import ActivityItem from "@/src/features/transactions/components/ActivityItem";
+import { useTransactions } from "@/src/features/transactions/hooks/useTransactions";
 import { COLORS } from "@/src/theme/colors";
 import { SPACING } from "@/src/theme/spacing";
 import { TYPOGRAPHY } from "@/src/theme/typography";
@@ -12,8 +14,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import ActivityItem from "../features/transactions/components/ActivityItem";
-import { useTransactions } from "../features/transactions/hooks/useTransactions";
 
 export default function TransactionsScreen() {
   const [filter, setFilter] = useState<"all" | "pix" | "ted" | "doc">("all");

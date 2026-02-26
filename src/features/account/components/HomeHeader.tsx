@@ -7,12 +7,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useBalanceStore } from "@/src/features/account/store/useBalanceStore";
 
 export default function HomeHeader() {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
     setIsVisible((prev) => !prev);
   };
+
+  const { balance } = useBalanceStore();
+
+const formatCurrency = (value: number) =>
+  value.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -30,7 +40,7 @@ export default function HomeHeader() {
                 currency: "BRL",
                 });
              */}
-            {isVisible ? "R$ 12.540.322,90" : "R$ ••••••"}
+            {isVisible ? formatCurrency(balance) : "R$ ••••••"}
           </Text>
 
           <TouchableOpacity onPress={toggleVisibility}>

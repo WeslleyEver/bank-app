@@ -1,4 +1,5 @@
 import HeaderBtn from "@/components/navigation/HeaderBtnsroutes";
+import { useBalanceStore } from "@/src/features/account/store/useBalanceStore";
 import { COLORS } from "@/src/theme/colors";
 import { RADIUS } from "@/src/theme/radius";
 import { SHADOWS } from "@/src/theme/shadows";
@@ -7,7 +8,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useBalanceStore } from "@/src/features/account/store/useBalanceStore";
 
 export default function HomeHeader() {
   const [isVisible, setIsVisible] = useState(true);
@@ -17,11 +17,11 @@ export default function HomeHeader() {
 
   const { balance } = useBalanceStore();
 
-const formatCurrency = (value: number) =>
-  value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+  const formatCurrency = (value: number) =>
+    value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
 
   return (
     <View style={styles.container}>
@@ -61,7 +61,7 @@ const formatCurrency = (value: number) =>
             <HeaderBtn icon="barcode-outline" label="Pagamentos" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/pix/pix")}>
+          <TouchableOpacity onPress={() => router.push("/pix/key")}>
             <HeaderBtn icon="pix" library="fa6" label="Área Pix" />
           </TouchableOpacity>
 

@@ -3,7 +3,15 @@ import LottieView from "lottie-react-native";
 import { useCallback, useRef } from "react";
 
 type Props = {
-  type?: "metronome" | "card" | "pay" | "success" | "disc" | "band" | "load";
+  type?:
+    | "metronome"
+    | "card"
+    | "pay"
+    | "success"
+    | "disc"
+    | "band"
+    | "load"
+    | "transfer";
   size?: number;
   loop?: boolean;
 };
@@ -16,6 +24,7 @@ const animations = {
   disc: require("@/assets/animations/playermusic.json"),
   load: require("@/assets/animations/loading.json"),
   band: require("@/assets/animations/band.json"),
+  transfer: require("@/assets/animations/Transfer Money.json"),
 };
 
 /**

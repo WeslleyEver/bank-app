@@ -44,6 +44,11 @@ To learn more about developing your project with Expo, look at the following res
 
 ## Join the community
 
+// Isso remove o padding automático do topo (onde fica o notch/header)
+
+<!-- <SafeAreaView edges={['right', 'bottom', 'left']} style={{ flex: 1 }}> -->
+<!-- style={StyleSheet.absoluteFill} // Atalho para top:0, left:0, etc. -->
+
 Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
@@ -63,7 +68,21 @@ npx expo install expo-navigation-bar
 
 npx expo install expo-system-ui
 
+npx expo install expo-sharing
+
+npx expo install expo-blur
+
+npx expo install expo-crypto
+
+npm install uuid
+
+npm install zustand
+
+npx expo install react-native-get-random-values
+
 Após instalar:
+
+Ctrl+Shift+P -> TypeScript: Restart TS Server
 
 npx expo start -c
 

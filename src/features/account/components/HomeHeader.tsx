@@ -57,11 +57,11 @@ export default function HomeHeader() {
             <HeaderBtn icon="logo-wechat" label="Suporte" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/transactions")}>
+          <TouchableOpacity onPress={() => router.push("/pix/key")}>
             <HeaderBtn icon="barcode-outline" label="Pagamentos" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/pix/key")}>
+          <TouchableOpacity onPress={() => router.push("/pix")}>
             <HeaderBtn icon="pix" library="fa6" label="Área Pix" />
           </TouchableOpacity>
 

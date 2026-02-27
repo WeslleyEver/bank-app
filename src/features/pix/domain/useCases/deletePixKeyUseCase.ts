@@ -12,3 +12,10 @@ export async function deletePixKeyUseCase(id: string): Promise<void> {
 
   return pixRepository.delete(id);
 }
+// import { usePixStore } from "../../store/pix.store";
+
+// export async function deletePixKeyUseCase(id: string) {
+//   await pixRepository.delete(id);
+
+//   usePixStore.getState().removeKey(id);
+// }

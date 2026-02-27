@@ -34,7 +34,7 @@ type BalanceState = {
  * ------------------------------------------------------------------
  */
 export const useBalanceStore = create<BalanceState>()((set) => ({
-  balance: 5000.0, // valor inicial mockado
+  balance: 1000000.0, // valor inicial mockado
 
   deposit: (amount: number) =>
     set((state) => ({

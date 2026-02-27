@@ -1,40 +1,29 @@
+import { PixKeyActionsBottomSheet } from "@/src/features/pix/components/PixKeyActionsBottomSheet";
+import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
 import { PixKey } from "@/src/features/pix/domain/models/PixKey";
-import { listPixKeysUseCase } from "@/src/features/pix/domain/useCases/listPixKeysUseCase";
+import { usePixStore } from "@/src/features/pix/store/pix.store";
 import { COLORS } from "@/src/theme/colors";
-import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { SHADOWS } from "@/src/theme/shadows";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AreaPixScreen() {
-  // const { refresh } = useLocalSearchParams();
-  // const insets = useSafeAreaInsets();
+
+  const [selectedKey, setSelectedKey] = useState<PixKey | null>(null);
+
   const router = useRouter();
-
-  const [pixKeys, setPixKeys] = useState<PixKey[]>([]);
-
-  /**
-   * Carrega as chaves sempre que a tela entra em foco.
-   * Isso garante atualização ao voltar do cadastro.
-   */
-  async function loadPixKeys() {
-    const keys = await listPixKeysUseCase();
-    setPixKeys(keys);
-  }
-
-  useFocusEffect(
-    useCallback(() => {
-      loadPixKeys();
-    }, []),
-  );
+  const pixKeys = usePixStore((state) => state.keys);
 
   return (
     <SafeAreaView
       edges={["right", "bottom", "left"]}
-      style={{ flex: 1, backgroundColor: "#fff", padding: 20 }}
+      style={{ flex: 1, backgroundColor: "#fff" }}
     >
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 20 }}>
+        <Text style={{ fontSize: 22, fontWeight: "bold", marginVertical: 25, marginHorizontal: 12, }}>
           Minhas chaves Pix
         </Text>
 
@@ -46,28 +35,59 @@ export default function AreaPixScreen() {
               Nenhuma chave cadastrada
             </Text>
           }
-          renderItem={({ item }) => (
-            <View
-              style={{
-                padding: 15,
-                borderRadius: 12,
-                backgroundColor: "#1c1c1e",
-                marginBottom: 12,
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>
-                {item.type.toUpperCase()}
-              </Text>
-              <Text style={{ color: "#aaa", marginTop: 4 }}>{item.value}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => {
+            const config = PIX_TYPE_CONFIG[item.type];
+
+            return (
+              <View
+                style={{
+                  borderWidth: 1,
+                  marginHorizontal: 12,
+                  paddingHorizontal: 15,
+                  paddingVertical: 15,
+                  borderRadius: 12,
+                  borderColor: "#f5f5f5",
+                  backgroundColor: "#fff",
+                  marginBottom: 12,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  ...SHADOWS.level2,
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
+                  <View style={{ backgroundColor: "#eb0459da", padding: 12, borderRadius:50,}}>
+                    <Ionicons
+                      name={config.icon}
+                      size={24}
+                      color="#fff"
+                    />
+                  </View>
+
+
+                  <View>
+                    <Text style={{ color: COLORS.darkcolor, fontWeight: "600" }}>
+                      {config.label}
+                    </Text>
+                    <Text style={{ color: "#aaa", marginTop: 4 }}>
+                      {item.value}
+                    </Text>
+
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => setSelectedKey(item)}>
+                  <Ionicons name="ellipsis-vertical" size={20} color={COLORS.darkcolor} />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
         />
 
         {/* BOTÃO CADASTRAR */}
         <TouchableOpacity
           onPress={() => router.push("/pix/register")}
           style={{
-            marginTop: 20,
+            margin: 15,
             padding: 15,
             borderRadius: 12,
             backgroundColor: COLORS.primary,
@@ -78,7 +98,14 @@ export default function AreaPixScreen() {
             Cadastrar nova chave
           </Text>
         </TouchableOpacity>
+        {selectedKey && (
+          <PixKeyActionsBottomSheet
+            pixKey={selectedKey}
+            onClose={() => setSelectedKey(null)}
+          />
+        )}
       </View>
+
     </SafeAreaView>
   );
 }

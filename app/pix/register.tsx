@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 import { RegisterPixKeyBottomSheet } from "@/src/features/pix/components/RegisterPixKeyBottomSheet";
+import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
 import { PixKeyType } from "@/src/features/pix/domain/models/PixKey";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,27 +11,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function RegisterPixKeyScreen() {
   const router = useRouter();
   const [selectedType, setSelectedType] = useState<PixKeyType | null>(null);
-  const PIX_TYPE_CONFIG: Record<
-    PixKeyType,
-    { label: string; icon: keyof typeof Ionicons.glyphMap }
-  > = {
-    phone: {
-      label: "Celular",
-      icon: "phone-portrait-outline",
-    },
-    email: {
-      label: "Email",
-      icon: "mail-outline",
-    },
-    cpf: {
-      label: "CPF",
-      icon: "id-card-outline",
-    },
-    random: {
-      label: "Chave aleatória",
-      icon: "shuffle-outline",
-    },
-  };
 
   function handleSelect(type: PixKeyType) {
     setSelectedType(type);
@@ -40,8 +20,9 @@ export default function RegisterPixKeyScreen() {
     setSelectedType(null);
   }
 
-  function handleSuccess() {
+  async function handleSuccess() {
     setSelectedType(null);
+    await new Promise((resolve) => setTimeout(resolve, 50));
     router.back(); // volta para lista atualizada
   }
 

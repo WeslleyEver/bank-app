@@ -1,5 +1,6 @@
 import * as Crypto from "expo-crypto";
 import { pixRepository } from "../../infra/pix.repository";
+import { usePixStore } from "../../store/pix.store";
 import { PixKey } from "../models/PixKey";
 
 /**
@@ -27,5 +28,11 @@ export async function registerPixKeyUseCase(
     value,
     createdAt: new Date(),
   };
+
+  await pixRepository.register(newKey);
+
+  // Atualiza store global
+  usePixStore.getState().addKey(newKey);
+
   return pixRepository.register(newKey);
 }

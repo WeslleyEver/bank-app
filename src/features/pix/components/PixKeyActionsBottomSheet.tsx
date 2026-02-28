@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { useEffect, useRef } from "react";
 import {
+  Alert,
   Animated,
   Dimensions,
   PanResponder,
@@ -79,7 +80,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           }).start();
         }
       },
-    })
+    }),
   ).current;
 
   async function handleShare() {
@@ -89,16 +90,39 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
   }
 
   function handleDelete() {
-    removeKey(pixKey.id);
-    closeWithAnimation();
+    Alert.alert(
+      "Excluir chave",
+      "Tem certeza que deseja deletar esta chave Pix?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Deletar",
+          style: "destructive",
+          onPress: () => {
+            removeKey(pixKey.id);
+            closeWithAnimation();
+          },
+        },
+      ],
+    );
   }
 
   return (
-    <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "flex-end" }}>
+    <View
+      style={{ ...StyleSheet.absoluteFillObject, justifyContent: "flex-end" }}
+    >
       <Animated.View
         style={{ ...StyleSheet.absoluteFillObject, opacity: overlayOpacity }}
       >
-        <BlurView intensity={40} tint="dark" style={{ flex: 1 }} experimentalBlurMethod="dimezisBlurView">
+        <BlurView
+          intensity={40}
+          tint="dark"
+          style={{ flex: 1 }}
+          experimentalBlurMethod="dimezisBlurView"
+        >
           <TouchableOpacity style={{ flex: 1 }} onPress={closeWithAnimation} />
         </BlurView>
       </Animated.View>
@@ -130,9 +154,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           <Text style={{ fontWeight: "bold", marginTop: 8 }}>
             {config.label}
           </Text>
-          <Text style={{ color: "#666", marginTop: 4 }}>
-            {pixKey.value}
-          </Text>
+          <Text style={{ color: "#666", marginTop: 4 }}>{pixKey.value}</Text>
         </View>
 
         {/* 📤 Compartilhar */}
@@ -160,9 +182,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           }}
         >
           <Ionicons name="trash-outline" size={22} color="red" />
-          <Text style={{ marginLeft: 12, color: "red" }}>
-            Deletar chave
-          </Text>
+          <Text style={{ marginLeft: 12, color: "red" }}>Deletar chave</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

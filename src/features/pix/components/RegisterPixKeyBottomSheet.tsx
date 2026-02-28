@@ -2,20 +2,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { useEffect, useRef, useState } from "react";
 import {
-	ActivityIndicator,
-	Animated,
-	Dimensions,
-	PanResponder,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  PanResponder,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { COLORS } from "@/src/theme/colors";
 import { PixKeyType } from "../domain/models/PixKey";
-import { registerPixKeyUseCase } from "../domain/useCases/registerPixKeyUseCase";
+import { registerPixKeyUseCase } from "../useCases/registerPixKeyUseCase";
+import { isValidCPF } from "../utils/cpfValidator";
+import { cpfMask, onlyNumbers, phoneMask } from "../utils/masks";
 
 interface Props {
   type: PixKeyType;
@@ -32,6 +34,32 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
 
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function handleChange(text: string) {
+    setError(null);
+    if (type === "cpf") {
+      const numbers = onlyNumbers(text);
+      if (numbers.length === 11 && !isValidCPF(numbers)) {
+        setError("CPF inválido");
+      }
+      setValue(cpfMask(text));
+      return;
+    }
+
+    if (type === "phone") {
+      setValue(phoneMask(text));
+      return;
+    }
+
+    if (type === "email") {
+      setValue(text.trim());
+      return;
+    }
+
+    setValue(text);
+  }
 
   // 🎬 Entrada suave
   useEffect(() => {
@@ -47,6 +75,12 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
         useNativeDriver: true,
       }),
     ]).start();
+  }, []);
+
+  useEffect(() => {
+    if (type === "random") {
+      handleRegister();
+    }
   }, []);
 
   function closeWithAnimation() {
@@ -89,18 +123,40 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
   ).current;
 
   async function handleRegister() {
+    if (loading) return;
+
     try {
       setLoading(true);
+      setError(null);
 
-      await registerPixKeyUseCase(type, value);
+      let finalValue = value;
 
+      if (type === "cpf" || type === "phone") {
+        finalValue = onlyNumbers(value);
+      }
+
+      const startTime = Date.now();
+
+      await registerPixKeyUseCase(type, finalValue);
+
+      // 🔥 garante pelo menos 800ms de loading
+      const elapsed = Date.now() - startTime;
+      const remaining = 800 - elapsed;
+
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+
+      setSuccess(true);
+
+      // 🔥 mostra sucesso por 1s antes de fechar
       setTimeout(() => {
-        setLoading(false);
         closeWithAnimation();
         onSuccess();
-      }, 600);
-    } catch (error) {
-      console.log(error);
+      }, 1000);
+    } catch (err: any) {
+      setError(err.message ?? "Erro ao cadastrar chave");
+    } finally {
       setLoading(false);
     }
   }
@@ -119,6 +175,8 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
   }
 
   const isRandom = type === "random";
+
+  // const isDisabled = loading || (!isRandom && value.trim().length === 0);
 
   return (
     <View
@@ -201,8 +259,18 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
 
         {!isRandom && (
           <TextInput
+            autoCapitalize="none"
+            keyboardType={
+              type === "email"
+                ? "email-address"
+                : type === "phone"
+                  ? "phone-pad"
+                  : type === "cpf"
+                    ? "number-pad"
+                    : "default"
+            }
             value={value}
-            onChangeText={setValue}
+            onChangeText={handleChange}
             placeholder="Digite aqui"
             placeholderTextColor="#666"
             style={{
@@ -216,11 +284,27 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
             }}
           />
         )}
+        {error && (
+          <Text
+            style={{
+              color: "red",
+              marginBottom: 15,
+              fontSize: 13,
+            }}
+          >
+            {error}
+          </Text>
+        )}
 
         <TouchableOpacity
+          disabled={loading || success}
           onPress={handleRegister}
           style={{
-            backgroundColor: COLORS.primary,
+            backgroundColor: success
+              ? "#2ecc71"
+              : loading
+                ? "#999"
+                : COLORS.primary,
             paddingVertical: 18,
             paddingHorizontal: 15,
             borderRadius: 12,
@@ -229,6 +313,15 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
         >
           {loading ? (
             <ActivityIndicator color="white" />
+          ) : success ? (
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
+            >
+              <Ionicons name="checkmark-circle" size={20} color="white" />
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Chave cadastrada!
+              </Text>
+            </View>
           ) : (
             <Text style={{ color: "white", fontWeight: "bold" }}>
               Confirmar

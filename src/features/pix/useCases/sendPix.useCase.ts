@@ -3,55 +3,58 @@ import { useTransactionStore } from "../../transactions/store/useTransactionStor
 import { pixService } from "../services/pix.service";
 
 /**
- * ------------------------------------------------------------------
- * UseCase: sendPixUseCase
- * ------------------------------------------------------------------
+ * Caso de Uso: Envio de Pix
  *
  * Camada de aplicação responsável por orquestrar o fluxo
- * completo de envio de Pix dentro do app.
+ * completo de envio de Pix dentro do aplicativo.
  *
  * Papel na arquitetura:
  * Screen → UseCase → Service → Store
  *
  * Responsabilidades:
- * - Receber dados vindos da UI
- * - Chamar a camada de serviço (simulação de API)
- * - Processar resposta
- * - Atualizar stores globais
+ * - Receber dados provenientes da camada de apresentação
+ * - Acionar a camada de serviço (integração com API ou simulação)
+ * - Processar resposta da operação
+ * - Atualizar os estados globais da aplicação
  *
- * O UseCase centraliza a regra de negócio da operação.
- * A UI não deve acessar stores diretamente.
- * A UI não deve chamar services diretamente.
+ * Princípios aplicados:
+ * - A UI não acessa stores diretamente para executar regra de negócio
+ * - A UI não chama services diretamente
+ * - O UseCase centraliza a orquestração da operação
  *
- * Isso permite:
- * - Fácil manutenção
- * - Testabilidade isolada
- * - Substituição simples da API futuramente
+ * Benefícios:
+ * - Separação clara de responsabilidades
+ * - Facilidade para testes unitários
+ * - Substituição transparente da camada de serviço
  *
- * Quando integrar backend real:
- * Nenhuma alteração será necessária aqui,
- * apenas dentro do pixService.
+ * Observação:
+ * Ao integrar um backend real, nenhuma alteração será necessária
+ * neste UseCase, apenas na implementação do pixService.
  *
- * ------------------------------------------------------------------
- */
-
-/**
- * Executa fluxo completo de envio de Pix.
- *
- * @param to - Destinatário da transferência
+ * @param to - Identificador do destinatário (chave Pix)
  * @param amount - Valor a ser transferido
  *
- * @throws Error quando o service retornar falha (ex: saldo insuficiente)
+ * @returns Promise<void>
+ *
+ * @throws Error - Caso o serviço retorne falha (ex: saldo insuficiente)
  */
-export async function sendPixUseCase(to: string, amount: number) {
+export async function sendPixUseCase(
+  to: string,
+  amount: number,
+): Promise<void> {
+  /**
+   * 1. Executa operação através da camada de serviço.
+   */
   const response = await pixService.sendPix({ to, amount });
 
+  /**
+   * 2. Obtém instâncias atuais das stores globais.
+   */
   const balanceStore = useBalanceStore.getState();
   const transactionStore = useTransactionStore.getState();
 
   /**
-   * Atualizações de estado acontecem
-   * somente após sucesso da "API".
+   * 3. Atualiza estado somente após sucesso da operação.
    */
   balanceStore.setBalance(response.newBalance);
   transactionStore.addTransaction(response.transaction);

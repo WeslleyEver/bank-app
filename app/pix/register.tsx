@@ -2,15 +2,15 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-import { RegisterPixKeyBottomSheet } from "@/src/features/pix/components/RegisterPixKeyBottomSheet";
+// import { RegisterPixKeyBottomSheet } from "@/src/features/pix/components/RegisterPixKeyBottomSheet";
+
 import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
 import { PixKeyType } from "@/src/features/pix/domain/models/PixKey";
+import { RegisterPixKeyBottomSheet } from "@/src/features/pix/presentation/components/RegisterPixKeyBottomSheet";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterPixKeyScreen() {
-
-  
   const router = useRouter();
   const [selectedType, setSelectedType] = useState<PixKeyType | null>(null);
 

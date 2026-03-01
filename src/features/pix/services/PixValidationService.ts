@@ -1,22 +1,56 @@
 import { PIX_LIMITS } from "../constants/pixLimits";
 import { PixKey, PixKeyType } from "../domain/models/PixKey";
-import { isValidCPF } from "../utils/cpfValidator";
-import { isValidEmail } from "../utils/emailValidator";
-import { isValidPhone } from "../utils/phoneValidator";
+import { isValidCPF } from "../validators/cpfValidator";
+import { isValidEmail } from "../validators/emailValidator";
+import { isValidPhone } from "../validators/phoneValidator";
 
+/**
+ * Representa o resultado de uma validação.
+ *
+ * @property valid - Indica se a validação foi bem-sucedida.
+ * @property error - Mensagem de erro retornada em caso de falha.
+ */
 export type ValidationResult = {
   valid: boolean;
   error?: string;
 };
 
+/**
+ * Serviço responsável por validar regras de criação de chaves PIX.
+ *
+ * Regras aplicadas:
+ * - Limite máximo de chaves por tipo de conta (PF/PJ)
+ * - Prevenção de chaves duplicadas
+ * - Validação específica por tipo de chave (CPF, telefone, email)
+ *
+ * Essa classe centraliza regras de negócio relacionadas à validação,
+ * mantendo o domínio desacoplado da camada de interface.
+ */
 export class PixValidationService {
+  /**
+   * Executa a validação completa de uma chave PIX antes do cadastro.
+   *
+   * @param type - Tipo da chave PIX (cpf, phone, email ou random)
+   * @param value - Valor da chave informada pelo usuário
+   * @param existingKeys - Lista de chaves já cadastradas na conta
+   * @param accountType - Tipo da conta (PF ou PJ). Default: PF
+   *
+   * @returns ValidationResult
+   *
+   * Fluxo de validação:
+   * 1. Verifica limite máximo permitido pelo Bacen
+   * 2. Verifica se a chave já está cadastrada
+   * 3. Executa validação específica baseada no tipo
+   */
   static validate(
     type: PixKeyType,
     value: string,
     existingKeys: PixKey[],
     accountType: "PF" | "PJ" = "PF",
   ): ValidationResult {
-    // 🔒 Limite Bacen
+    /**
+     *  Regra 1 — Limite máximo de chaves por tipo de conta
+     */
     if (existingKeys.length >= PIX_LIMITS[accountType]) {
       return {
         valid: false,
@@ -24,7 +58,9 @@ export class PixValidationService {
       };
     }
 
-    //  Duplicadas
+    /**
+     *  Regra 2 — Impede cadastro de chave duplicada
+     */
     const alreadyExists = existingKeys.some(
       (key) => key.type === type && key.value === value,
     );
@@ -36,45 +72,45 @@ export class PixValidationService {
       };
     }
 
-    // Validações por tipo
+    /**
+     *  Regra 3 — Validação específica por tipo
+     */
     switch (type) {
       case "cpf":
-        if (type === "cpf") {
-          if (!isValidCPF(value)) {
-            return {
-              valid: false,
-              error: "CPF inválido",
-            };
-          }
+        if (!isValidCPF(value)) {
+          return {
+            valid: false,
+            error: "CPF inválido",
+          };
         }
         break;
 
       case "phone":
-        if (type === "phone") {
-          if (!isValidPhone(value)) {
-            return {
-              valid: false,
-              error: "Celular inválido",
-            };
-          }
+        if (!isValidPhone(value)) {
+          return {
+            valid: false,
+            error: "Celular inválido",
+          };
         }
         break;
 
       case "email":
-        if (type === "email") {
-          if (!isValidEmail(value)) {
-            return {
-              valid: false,
-              error: "Email inválido",
-            };
-          }
+        if (!isValidEmail(value)) {
+          return {
+            valid: false,
+            error: "Email inválido",
+          };
         }
         break;
 
       case "random":
+        // Chave aleatória não exige validação de formato
         break;
     }
 
+    /**
+     * ✅ Caso todas as regras passem, retorna válido
+     */
     return { valid: true };
   }
 }

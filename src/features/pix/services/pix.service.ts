@@ -2,68 +2,75 @@ import { useBalanceStore } from "../../account/store/useBalanceStore";
 import { SendPixRequest, SendPixResponse } from "../types";
 
 /**
- * ------------------------------------------------------------------
  * Service: pixService
- * ------------------------------------------------------------------
  *
- * Camada responsável por simular comunicação com o backend
+ * Camada responsável por simular comunicação com backend
  * para operações relacionadas ao Pix.
  *
- * ⚠️ IMPORTANTE:
- * Este arquivo representa a camada de API.
- * Ele NÃO deve atualizar stores diretamente.
- * Ele NÃO deve conter lógica de UI.
+ * Responsabilidade exclusiva:
+ * - Receber payload
+ * - Simular validações que ocorreriam no backend
+ * - Retornar resposta estruturada
  *
- * Sua única responsabilidade é:
- * - Receber um payload
- * - Simular validações do backend
- * - Retornar uma resposta no formato esperado
+ * Restrições arquiteturais:
+ * - Não deve conter lógica de UI
+ * - Não deve atualizar stores diretamente
+ * - Não deve conter regra de negócio de orquestração
  *
- * Arquitetura:
+ * Fluxo arquitetural:
  * Screen → UseCase → Service → (retorna resposta) → Store
  *
- * No futuro:
- * A implementação abaixo deverá ser substituída por uma
- * chamada HTTP real, como:
- *
- *   return await axios.post("/pix/send", data);
- *
- * ------------------------------------------------------------------
+ * Evolução futura:
+ * Esta implementação deve ser substituída por integração HTTP real,
+ * mantendo o mesmo contrato de entrada e saída.
  */
 export const pixService = {
   /**
-   * Simula envio de Pix para backend.
+   * Simula envio de Pix.
    *
-   * Fluxo simulado:
-   * 1. Recebe dados do envio
-   * 2. Verifica saldo disponível (simulação local)
-   * 3. Calcula novo saldo
-   * 4. Retorna estrutura semelhante a uma resposta de API real
+   * Fluxo executado:
+   * 1. Recebe dados da operação
+   * 2. Simula latência de rede
+   * 3. Valida saldo disponível (simulação local)
+   * 4. Calcula novo saldo
+   * 5. Retorna objeto semelhante a uma resposta real de API
    *
    * @param data - Dados necessários para envio do Pix
-   * @returns Promise com nova transação e saldo atualizado
    *
-   * @throws Error quando saldo é insuficiente
+   * @returns Promise<SendPixResponse>
+   *
+   * @throws Error - Quando o saldo é insuficiente
+   *
+   * Observação:
+   * A validação de saldo aqui é apenas para simulação.
+   * Em ambiente real, essa verificação deve ocorrer exclusivamente no backend.
    */
   async sendPix(data: SendPixRequest): Promise<SendPixResponse> {
+    /**
+     * Obtém saldo atual apenas para simulação.
+     */
     const balanceStore = useBalanceStore.getState();
 
-    // Simula latência de rede
+    /**
+     * Simula latência de rede.
+     */
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     /**
-     * ⚠️ Esta validação está sendo feita no front apenas
-     * para simulação.
-     *
-     * Em ambiente real, a validação deve acontecer
-     * exclusivamente no backend.
+     * Validação simulada de saldo.
      */
     if (data.amount > balanceStore.balance) {
       throw new Error("Saldo insuficiente");
     }
 
+    /**
+     * Calcula novo saldo após operação.
+     */
     const newBalance = balanceStore.balance - data.amount;
 
+    /**
+     * Retorna estrutura de resposta padronizada.
+     */
     return {
       transaction: {
         id: String(Date.now()),

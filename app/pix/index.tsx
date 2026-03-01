@@ -1,6 +1,6 @@
-import { PixKeyActionsBottomSheet } from "@/src/features/pix/components/PixKeyActionsBottomSheet";
 import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
 import { PixKey } from "@/src/features/pix/domain/models/PixKey";
+import { PixKeyActionsBottomSheet } from "@/src/features/pix/presentation/components/PixKeyActionsBottomSheet";
 import { usePixStore } from "@/src/features/pix/store/pix.store";
 import { COLORS } from "@/src/theme/colors";
 import { SHADOWS } from "@/src/theme/shadows";
@@ -11,7 +11,6 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AreaPixScreen() {
-
   const [selectedKey, setSelectedKey] = useState<PixKey | null>(null);
 
   const router = useRouter();
@@ -23,7 +22,14 @@ export default function AreaPixScreen() {
       style={{ flex: 1, backgroundColor: "#fff" }}
     >
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", marginVertical: 25, marginHorizontal: 12, }}>
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "bold",
+            marginVertical: 25,
+            marginHorizontal: 12,
+          }}
+        >
           Minhas chaves Pix
         </Text>
 
@@ -55,28 +61,40 @@ export default function AreaPixScreen() {
                   justifyContent: "space-between",
                 }}
               >
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
-                  <View style={{ backgroundColor: "#eb0459da", padding: 12, borderRadius:50,}}>
-                    <Ionicons
-                      name={config.icon}
-                      size={24}
-                      color="#fff"
-                    />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 15,
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "#eb0459da",
+                      padding: 12,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Ionicons name={config.icon} size={24} color="#fff" />
                   </View>
 
-
                   <View>
-                    <Text style={{ color: COLORS.darkcolor, fontWeight: "600" }}>
+                    <Text
+                      style={{ color: COLORS.darkcolor, fontWeight: "600" }}
+                    >
                       {config.label}
                     </Text>
                     <Text style={{ color: "#aaa", marginTop: 4 }}>
                       {item.value}
                     </Text>
-
                   </View>
                 </View>
                 <TouchableOpacity onPress={() => setSelectedKey(item)}>
-                  <Ionicons name="ellipsis-vertical" size={20} color={COLORS.darkcolor} />
+                  <Ionicons
+                    name="ellipsis-vertical"
+                    size={20}
+                    color={COLORS.darkcolor}
+                  />
                 </TouchableOpacity>
               </View>
             );
@@ -105,7 +123,6 @@ export default function AreaPixScreen() {
           />
         )}
       </View>
-
     </SafeAreaView>
   );
 }

@@ -1,11 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   Alert,
   Animated,
-  Dimensions,
-  PanResponder,
   Share,
   StyleSheet,
   Text,
@@ -14,23 +12,23 @@ import {
 } from "react-native";
 
 import { COLORS } from "@/src/theme/colors";
-import { PIX_TYPE_CONFIG } from "../constants/pixTypeConfig";
-import { PixKey } from "../domain/models/PixKey";
-import { usePixStore } from "../store/pix.store";
+import { PIX_TYPE_CONFIG } from "../../constants/pixTypeConfig";
+import { PixKey } from "../../domain/models/PixKey";
+import { useDeletePixKey } from "../hooks/useDeletePixKey";
+// import { usePixStore } from "../../store/pix.store";
+import { useBottomSheetAnimation } from "../hooks/useBottomSheetAnimation";
 
 interface Props {
   pixKey: PixKey;
   onClose: () => void;
 }
 
-const SCREEN_HEIGHT = Dimensions.get("window").height;
-const CLOSE_THRESHOLD = 120;
-
 export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
-  const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
+  const { translateY, overlayOpacity, closeWithAnimation, panResponder } =
+    useBottomSheetAnimation(onClose);
 
-  const removeKey = usePixStore((state) => state.removeKey);
+  const { remove, loading } = useDeletePixKey(closeWithAnimation);
+  // const removeKey = usePixStore((state) => state.removeKey);
 
   const config = PIX_TYPE_CONFIG[pixKey.type];
 
@@ -48,40 +46,6 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
       }),
     ]).start();
   }, []);
-
-  function closeWithAnimation() {
-    Animated.parallel([
-      Animated.timing(translateY, {
-        toValue: SCREEN_HEIGHT,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-      Animated.timing(overlayOpacity, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-    ]).start(onClose);
-  }
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gesture) => gesture.dy > 5,
-      onPanResponderMove: (_, gesture) => {
-        if (gesture.dy > 0) translateY.setValue(gesture.dy);
-      },
-      onPanResponderRelease: (_, gesture) => {
-        if (gesture.dy > CLOSE_THRESHOLD) {
-          closeWithAnimation();
-        } else {
-          Animated.spring(translateY, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    }),
-  ).current;
 
   async function handleShare() {
     await Share.share({
@@ -102,8 +66,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           text: "Deletar",
           style: "destructive",
           onPress: () => {
-            removeKey(pixKey.id);
-            closeWithAnimation();
+            remove(pixKey.id);
           },
         },
       ],
@@ -148,7 +111,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           }}
         />
 
-        {/* 🔑 Info da chave */}
+        {/*  Info da chave */}
         <View style={{ alignItems: "center", marginBottom: 25 }}>
           <Ionicons name={config.icon} size={32} color={COLORS.darkcolor} />
           <Text style={{ fontWeight: "bold", marginTop: 8 }}>
@@ -157,7 +120,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           <Text style={{ color: "#666", marginTop: 4 }}>{pixKey.value}</Text>
         </View>
 
-        {/* 📤 Compartilhar */}
+        {/* Compartilhar */}
         <TouchableOpacity
           onPress={handleShare}
           style={{
@@ -172,7 +135,7 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
           <Text style={{ marginLeft: 12 }}>Compartilhar</Text>
         </TouchableOpacity>
 
-        {/* 🗑 Deletar */}
+        {/* Deletar */}
         <TouchableOpacity
           onPress={handleDelete}
           style={{

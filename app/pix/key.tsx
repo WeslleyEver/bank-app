@@ -1,75 +1,22 @@
-import { COLORS } from "@/src/theme/colors";
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import {
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import PixKeyScreen from "@/src/features/pix/presentation/screens/PixKeySreen";
 
 /**
- * ------------------------------------------------------------------
- * Screen: PixKeyScreen
- * ------------------------------------------------------------------
+ * PixKeyPage
  *
- * Primeira etapa do fluxo Pix.
+ * Rota responsável por representar a URL "/pix/key".
  *
- * Responsável por:
- * - Capturar chave do destinatário
- * - Navegar para tela de valor
+ * Esta camada NÃO deve conter:
+ * - Lógica de negócio
+ * - Regras de validação
+ * - Manipulação de estado complexa
  *
- * Não executa regra financeira.
- * Apenas coleta dados.
- * ------------------------------------------------------------------
+ * Sua única responsabilidade é renderizar
+ * a Screen real da feature Pix.
+ *
+ * Arquitetura adotada:
+ * - app → roteamento
+ * - src/features → regras e UI
  */
-
-export default function PixKeyScreen() {
-  const [key, setKey] = useState("");
-  const router = useRouter();
-
-  function handleNext() {
-    if (!key.trim()) return;
-    router.push({
-      pathname: "/pix/amount",
-      params: { to: key },
-    });
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enviar Pix</Text>
-
-      <TextInput
-        placeholder="Digite a chave Pix"
-        value={key}
-        onChangeText={setKey}
-        style={styles.input}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handleNext}>
-        <Text style={styles.buttonText}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
-  );
+export default function PixKeyPage() {
+  return <PixKeyScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: COLORS.lightcolor },
-  title: { fontSize: 22, marginBottom: 20 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 12,
-    borderRadius: 8,
-  },
-  button: {
-    marginTop: 20,
-    backgroundColor: COLORS.primary,
-    padding: 14,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: { color: "#fff", fontWeight: "bold" },
-});

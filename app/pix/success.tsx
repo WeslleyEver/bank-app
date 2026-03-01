@@ -1,51 +1,22 @@
-import LottieAnimation from "@/src/shared/components/animations/LottieAnimation";
-import { COLORS } from "@/src/theme/colors";
-import { useRouter } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import PixConfirmScreen from "@/src/features/pix/presentation/screens/ConfirmScreen";
 
 /**
- * ------------------------------------------------------------------
- * Screen: PixSuccessScreen
- * ------------------------------------------------------------------
+ * SuccessPage
  *
- * Tela exibida após sucesso da operação.
+ * Rota responsável por representar a URL "/pix/success".
  *
- * Apenas feedback visual.
- * Não executa lógica.
- * ------------------------------------------------------------------
+ * Esta camada NÃO deve conter:
+ * - Lógica de negócio
+ * - Regras de validação
+ * - Manipulação de estado complexa
+ *
+ * Sua única responsabilidade é renderizar
+ * a Screen real da feature Pix.
+ *
+ * Arquitetura adotada:
+ * - app → roteamento
+ * - src/features → regras e UI
  */
-
-export default function PixSuccessScreen() {
-  const router = useRouter();
-
-  return (
-    <View style={styles.container}>
-      <LottieAnimation type="success" size={180} loop={false} />
-      <Text style={styles.title}>Pix enviado com sucesso!</Text>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.replace("/")}
-      >
-        <Text style={styles.buttonText}>Voltar para Home</Text>
-      </TouchableOpacity>
-    </View>
-  );
+export default function SuccessPage() {
+  return <PixConfirmScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightcolor,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: { fontSize: 20, marginTop: 20 },
-  button: {
-    marginTop: 20,
-    backgroundColor: COLORS.primary,
-    padding: 14,
-    borderRadius: 8,
-  },
-  buttonText: { color: "#fff", fontWeight: "bold" },
-});

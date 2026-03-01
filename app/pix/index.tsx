@@ -1,128 +1,15 @@
-import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
-import { PixKey } from "@/src/features/pix/domain/models/PixKey";
-import { PixKeyActionsBottomSheet } from "@/src/features/pix/presentation/components/PixKeyActionsBottomSheet";
-import { usePixStore } from "@/src/features/pix/store/pix.store";
-import { COLORS } from "@/src/theme/colors";
-import { SHADOWS } from "@/src/theme/shadows";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import AreaPixScreen from "@/src/features/pix/presentation/screens/AreaPixScreen";
 
-export default function AreaPixScreen() {
-  const [selectedKey, setSelectedKey] = useState<PixKey | null>(null);
-
-  const router = useRouter();
-  const pixKeys = usePixStore((state) => state.keys);
-
-  return (
-    <SafeAreaView
-      edges={["right", "bottom", "left"]}
-      style={{ flex: 1, backgroundColor: "#fff" }}
-    >
-      <View style={{ flex: 1 }}>
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "bold",
-            marginVertical: 25,
-            marginHorizontal: 12,
-          }}
-        >
-          Minhas chaves Pix
-        </Text>
-
-        <FlatList
-          data={pixKeys}
-          keyExtractor={(item) => item.id}
-          ListEmptyComponent={
-            <Text style={{ textAlign: "center", marginTop: 40 }}>
-              Nenhuma chave cadastrada
-            </Text>
-          }
-          renderItem={({ item }) => {
-            const config = PIX_TYPE_CONFIG[item.type];
-
-            return (
-              <View
-                style={{
-                  borderWidth: 1,
-                  marginHorizontal: 12,
-                  paddingHorizontal: 15,
-                  paddingVertical: 15,
-                  borderRadius: 12,
-                  borderColor: "#f5f5f5",
-                  backgroundColor: "#fff",
-                  marginBottom: 12,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  ...SHADOWS.level2,
-                  justifyContent: "space-between",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 15,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: "#eb0459da",
-                      padding: 12,
-                      borderRadius: 50,
-                    }}
-                  >
-                    <Ionicons name={config.icon} size={24} color="#fff" />
-                  </View>
-
-                  <View>
-                    <Text
-                      style={{ color: COLORS.darkcolor, fontWeight: "600" }}
-                    >
-                      {config.label}
-                    </Text>
-                    <Text style={{ color: "#aaa", marginTop: 4 }}>
-                      {item.value}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity onPress={() => setSelectedKey(item)}>
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    size={20}
-                    color={COLORS.darkcolor}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
-
-        {/* BOTÃO CADASTRAR */}
-        <TouchableOpacity
-          onPress={() => router.push("/pix/register")}
-          style={{
-            margin: 15,
-            padding: 15,
-            borderRadius: 12,
-            backgroundColor: COLORS.primary,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            Cadastrar nova chave
-          </Text>
-        </TouchableOpacity>
-        {selectedKey && (
-          <PixKeyActionsBottomSheet
-            pixKey={selectedKey}
-            onClose={() => setSelectedKey(null)}
-          />
-        )}
-      </View>
-    </SafeAreaView>
-  );
+/**
+ * PixPage
+ *
+ * Camada de roteamento do Expo Router.
+ * Responsável apenas por conectar a rota "/pix"
+ * com a Screen real da feature Pix.
+ *
+ * Mantemos a lógica da feature isolada em src/features
+ * para preservar a arquitetura modular e escalável.
+ */
+export default function PixPage() {
+  return <AreaPixScreen />;
 }

@@ -1,73 +1,22 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import { COLORS } from "@/src/theme/colors";
+import PixAmountScreen from "@/src/features/pix/presentation/screens/PixAmountScreen";
 
 /**
- * ------------------------------------------------------------------
- * Screen: PixAmountScreen
- * ------------------------------------------------------------------
+ * PixAmountPage
  *
- * Segunda etapa do fluxo Pix.
+ * Rota responsável por representar a URL "/pix/amount".
  *
- * Responsável por:
- * - Capturar valor
- * - Navegar para confirmação
+ * Esta camada NÃO deve conter:
+ * - Lógica de negócio
+ * - Regras de validação
+ * - Manipulação de estado complexa
  *
- * Apenas coleta dados.
- * Não executa transferência.
- * ------------------------------------------------------------------
+ * Sua única responsabilidade é renderizar
+ * a Screen real da feature Pix.
+ *
+ * Arquitetura adotada:
+ * - app → roteamento
+ * - src/features → regras e UI
  */
-
-export default function PixAmountScreen() {
-  const { to } = useLocalSearchParams<{ to: string }>();
-  const [amount, setAmount] = useState("");
-  const router = useRouter();
-
-  function handleNext() {
-    const numericValue = Number(amount);
-    if (!numericValue || numericValue <= 0) return;
-
-    router.push({
-      pathname: "/pix/confirm",
-      params: { to, amount: numericValue },
-    });
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Valor do Pix</Text>
-
-      <TextInput
-        placeholder="R$ 0,00"
-        keyboardType="numeric"
-        value={amount}
-        onChangeText={setAmount}
-        style={styles.input}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handleNext}>
-        <Text style={styles.buttonText}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
-  );
+export default function PixAmountPage() {
+  return <PixAmountScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: COLORS.lightcolor },
-  title: { fontSize: 22, marginBottom: 20 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 12,
-    borderRadius: 8,
-  },
-  button: {
-    marginTop: 20,
-    backgroundColor: COLORS.primary,
-    padding: 14,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: { color: "#fff", fontWeight: "bold" },
-});

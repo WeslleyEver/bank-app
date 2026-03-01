@@ -1,8 +1,8 @@
 import { processQRCode } from "@/services/qrService";
+import { QRScanner } from "@/src/shared/qr/components/QRScanner";
+import { useQRScanner } from "@/src/shared/qr/hooks/useQRScanner";
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { QRScanner } from "./QRScanner";
-import { useQRScanner } from "./useQRScanner";
 
 export default function QRScreen() {
   const { handleScan } = useQRScanner();

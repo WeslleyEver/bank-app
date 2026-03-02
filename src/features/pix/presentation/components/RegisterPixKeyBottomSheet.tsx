@@ -1,3 +1,4 @@
+import { COLORS } from "@/src/theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
@@ -10,10 +11,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
-
-import { COLORS } from "@/src/theme/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { PixKeyType } from "../../domain/models/PixKey";
 import { useBottomSheetAnimation } from "../../presentation/hooks/useBottomSheetAnimation";
 import { formatPixInput } from "../../utils/formatPixInput";
@@ -184,122 +184,124 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
   const isRandom = type === "random";
 
   return (
-    <Modal visible transparent animationType="none" statusBarTranslucent>
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        {/* Overlay */}
-        <Animated.View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            opacity: overlayOpacity,
-          }}
-        >
-          <BlurView
-            intensity={40}
-            tint="dark"
-            experimentalBlurMethod="dimezisBlurView"
-            style={{ flex: 1 }}
+    <SafeAreaView edges={["right", "bottom", "left"]}>
+      <Modal visible transparent animationType="none" statusBarTranslucent>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          {/* Overlay */}
+          <Animated.View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              opacity: overlayOpacity,
+            }}
           >
-            <TouchableOpacity
+            <BlurView
+              intensity={40}
+              tint="dark"
+              experimentalBlurMethod="dimezisBlurView"
               style={{ flex: 1 }}
-              activeOpacity={1}
-              onPress={closeWithAnimation}
-            />
-          </BlurView>
-        </Animated.View>
+            >
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                activeOpacity={1}
+                onPress={closeWithAnimation}
+              />
+            </BlurView>
+          </Animated.View>
 
-        {/* Bottom Sheet */}
-        <Animated.View
-          {...panResponder.panHandlers}
-          style={{
-            backgroundColor: COLORS.lightcolor,
-            padding: 20,
-            borderTopLeftRadius: 24,
-            borderTopRightRadius: 24,
-            transform: [{ translateY }],
-          }}
-        >
-          {/* Drag Indicator */}
-          <View
+          {/* Bottom Sheet */}
+          <Animated.View
+            {...panResponder.panHandlers}
             style={{
-              width: 40,
-              height: 5,
-              borderRadius: 3,
-              backgroundColor: "#444",
-              alignSelf: "center",
-              marginBottom: 15,
-            }}
-          />
-
-          {/* Header */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 20,
+              backgroundColor: COLORS.lightcolor,
+              padding: 20,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+              transform: [{ translateY }],
             }}
           >
-            <Text
+            {/* Drag Indicator */}
+            <View
               style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                color: COLORS.darkcolor,
+                width: 40,
+                height: 5,
+                borderRadius: 3,
+                backgroundColor: "#444",
+                alignSelf: "center",
+                marginBottom: 15,
               }}
-            >
-              {getLabel()}
-            </Text>
+            />
 
-            <TouchableOpacity onPress={closeWithAnimation}>
-              <Ionicons name="close" size={24} color={COLORS.darkcolor} />
-            </TouchableOpacity>
-          </View>
-
-          {!isRandom && (
-            <TextInput
-              autoCapitalize="none"
-              keyboardType={
-                type === "email"
-                  ? "email-address"
-                  : type === "phone"
-                    ? "phone-pad"
-                    : type === "cpf"
-                      ? "number-pad"
-                      : "default"
-              }
-              value={value}
-              onChangeText={handleChange}
-              placeholder="Digite aqui"
-              placeholderTextColor="#666"
+            {/* Header */}
+            <View
               style={{
-                borderWidth: 1,
-                borderColor: "#8b8b8b",
-                borderRadius: 10,
-                padding: 18,
-                color: COLORS.darkcolor,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
                 marginBottom: 20,
               }}
-            />
-          )}
-
-          {error && (
-            <Text
-              style={{
-                color: "red",
-                marginBottom: 15,
-                fontSize: 13,
-              }}
             >
-              {error}
-            </Text>
-          )}
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: COLORS.darkcolor,
+                }}
+              >
+                {getLabel()}
+              </Text>
 
-          <SubmitButton
-            loading={loading}
-            success={success}
-            onPress={() => register(value)}
-          />
-        </Animated.View>
-      </View>
-    </Modal>
+              <TouchableOpacity onPress={closeWithAnimation}>
+                <Ionicons name="close" size={24} color={COLORS.darkcolor} />
+              </TouchableOpacity>
+            </View>
+
+            {!isRandom && (
+              <TextInput
+                autoCapitalize="none"
+                keyboardType={
+                  type === "email"
+                    ? "email-address"
+                    : type === "phone"
+                      ? "phone-pad"
+                      : type === "cpf"
+                        ? "number-pad"
+                        : "default"
+                }
+                value={value}
+                onChangeText={handleChange}
+                placeholder="Digite aqui"
+                placeholderTextColor="#666"
+                style={{
+                  borderWidth: 1,
+                  borderColor: "#8b8b8b",
+                  borderRadius: 10,
+                  padding: 18,
+                  color: COLORS.darkcolor,
+                  marginBottom: 20,
+                }}
+              />
+            )}
+
+            {error && (
+              <Text
+                style={{
+                  color: "red",
+                  marginBottom: 15,
+                  fontSize: 13,
+                }}
+              >
+                {error}
+              </Text>
+            )}
+
+            <SubmitButton
+              loading={loading}
+              success={success}
+              onPress={() => register(value)}
+            />
+          </Animated.View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 }

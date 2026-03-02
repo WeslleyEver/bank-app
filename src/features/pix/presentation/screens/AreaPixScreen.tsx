@@ -6,16 +6,37 @@ import { COLORS } from "@/src/theme/colors";
 import { SHADOWS } from "@/src/theme/shadows";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ClipboardPixBottomSheet } from "../components/ClipboardPixBottomSheet";
+import { useClipboardPix } from "../hooks/useClipboardPix";
 
 export default function AreaPixScreen() {
   const [selectedKey, setSelectedKey] = useState<PixKey | null>(null);
-
+  const [clipboardVisible, setClipboardVisible] = useState(false);
   const router = useRouter();
   const pixKeys = usePixStore((state) => state.keys);
+  const { pixKey, keyType, clear } = useClipboardPix();
 
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (pixKey && keyType) {
+      timer = setTimeout(() => {
+        setClipboardVisible(true);
+      }, 300);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [pixKey, keyType]);
+
+  function handleCloseClipboard() {
+    setClipboardVisible(false);
+    clear(); // evita loop infinito
+  }
   return (
     <SafeAreaView
       edges={["right", "bottom", "left"]}
@@ -120,6 +141,20 @@ export default function AreaPixScreen() {
           <PixKeyActionsBottomSheet
             pixKey={selectedKey}
             onClose={() => setSelectedKey(null)}
+          />
+        )}
+        {clipboardVisible && pixKey && keyType && (
+          <ClipboardPixBottomSheet
+            pixKey={pixKey}
+            keyType={keyType}
+            onClose={handleCloseClipboard}
+            onContinue={() => {
+              handleCloseClipboard();
+              router.push({
+                pathname: "/pix/confirm",
+                params: { pixKey },
+              });
+            }}
           />
         )}
       </View>

@@ -80,6 +80,8 @@ npm install zustand
 
 npx expo install react-native-get-random-values
 
+npm install expo-clipboard
+
 Após instalar:
 
 Ctrl+Shift+P -> TypeScript: Restart TS Server

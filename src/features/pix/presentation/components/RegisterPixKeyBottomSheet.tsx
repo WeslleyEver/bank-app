@@ -3,6 +3,8 @@ import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
 import {
   Animated,
+  Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -121,6 +123,7 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
     onSuccess,
     closeWithAnimation,
   );
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   function handleChange(text: string) {
     const result = formatPixInput(type, text);
@@ -141,6 +144,27 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
         useNativeDriver: true,
       }),
     ]).start();
+  }, []);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+      },
+    );
+
+    const hideSub = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => {
+        setKeyboardHeight(0);
+      },
+    );
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
   }, []);
 
   function getLabel() {
@@ -198,7 +222,7 @@ export function RegisterPixKeyBottomSheet({ type, onClose, onSuccess }: Props) {
           padding: 20,
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
-          transform: [{ translateY }],
+          transform: [{ translateY }, { translateY: -keyboardHeight * 0 }],
         }}
       >
         {/* Drag Indicator */}

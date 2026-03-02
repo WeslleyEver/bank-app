@@ -28,6 +28,31 @@ export type ValidationResult = {
  */
 export class PixValidationService {
   /**
+   * Detecta automaticamente o tipo da chave Pix
+   * baseado no valor informado.
+   *
+   * Utilizado para:
+   * - Clipboard
+   * - Fluxo de transferência
+   */
+  static detectKeyType(value: string): PixKeyType | null {
+    const cleaned = value.trim();
+
+    if (isValidCPF(cleaned)) return "cpf";
+
+    if (isValidPhone(cleaned)) return "phone";
+
+    if (isValidEmail(cleaned)) return "email";
+
+    // Chave aleatória Pix (UUID padrão Bacen)
+    const randomKeyRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (randomKeyRegex.test(cleaned)) return "random";
+
+    return null;
+  }
+  /**
    * Executa a validação completa de uma chave PIX antes do cadastro.
    *
    * @param type - Tipo da chave PIX (cpf, phone, email ou random)

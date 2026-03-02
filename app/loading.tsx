@@ -20,7 +20,7 @@ export default function LoadingScreen() {
         source={require("../assets/animations/loading.json")}
         autoPlay
         loop
-        style={{ width: 250, height: 250 }}
+        style={{ width: 150, height: 150 }}
       />
       <Text>Carregando...</Text>
     </View>

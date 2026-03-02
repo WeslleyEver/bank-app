@@ -81,6 +81,7 @@ npm install zustand
 npx expo install react-native-get-random-values
 
 npm install expo-clipboard
+npx expo install expo-clipboard
 
 Após instalar:
 

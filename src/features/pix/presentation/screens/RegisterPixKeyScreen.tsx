@@ -7,6 +7,8 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { PIX_TYPE_CONFIG } from "@/src/features/pix/constants/pixTypeConfig";
 import { PixKeyType } from "@/src/features/pix/domain/models/PixKey";
 import { RegisterPixKeyBottomSheet } from "@/src/features/pix/presentation/components/RegisterPixKeyBottomSheet";
+import { COLORS } from "@/src/theme/colors";
+import { SHADOWS } from "@/src/theme/shadows";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -46,21 +48,24 @@ export default function RegisterPixKeyScreen() {
               key={type}
               onPress={() => handleSelect(type)}
               style={{
+                position: "relative",
                 alignItems: "center",
                 flexDirection: "row",
                 gap: 20,
                 paddingVertical: 30,
                 paddingHorizontal: 15,
-                backgroundColor: "#1c1c1e",
+                backgroundColor: COLORS.tabbarligth,
                 marginBottom: 12,
                 marginHorizontal: 20,
                 borderRadius: 12,
+                ...SHADOWS.level1
               }}
             >
-              <Ionicons size={32} name={config.icon} color="#fff" />
-              <Text style={{ color: "white", fontWeight: "600" }}>
+              <Ionicons size={32} name={config.icon} color={COLORS.primary} />
+              <Text style={{ color: COLORS.primary, fontWeight: "600" }}>
                 {config.label}
               </Text>
+              <Ionicons size={18} name={"chevron-forward-outline"} color={COLORS.primary} style={{position: "absolute", right: 18 }} />
             </TouchableOpacity>
           );
         })}

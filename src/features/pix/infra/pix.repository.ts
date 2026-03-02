@@ -1,4 +1,5 @@
 import { PixKey } from "../domain/models/PixKey";
+import { usePixStore } from "../store/pix.store";
 
 /**
  * ------------------------------------------------------------------
@@ -100,6 +101,8 @@ export const pixRepository = {
    * - Validar autorização
    */
   async delete(id: string): Promise<void> {
-    pixKeys = pixKeys.filter((k) => k.id !== id);
+    usePixStore.setState((state) => ({
+      keys: state.keys.filter((k) => k.id !== id),
+    }));
   },
 };

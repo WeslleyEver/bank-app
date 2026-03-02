@@ -1,4 +1,4 @@
-import PixConfirmScreen from "@/src/features/pix/presentation/screens/ConfirmScreen";
+import PixSuccessScreen from "@/src/features/pix/presentation/screens/SuccessScreen";
 
 /**
  * SuccessPage
@@ -18,5 +18,5 @@ import PixConfirmScreen from "@/src/features/pix/presentation/screens/ConfirmScr
  * - src/features → regras e UI
  */
 export default function SuccessPage() {
-  return <PixConfirmScreen />;
+  return <PixSuccessScreen />;
 }

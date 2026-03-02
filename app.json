@@ -19,14 +19,17 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.devweslley.bankapp"
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      ["expo-system-ui"],
+      [
+        "expo-system-ui"
+      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -44,6 +47,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2e01e888-7a89-444c-8895-a4aa05ab76f4"
+      }
+    },
+    "owner": "devweslley"
   }
 }

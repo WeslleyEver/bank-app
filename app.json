@@ -20,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.devweslley.bankapp"
+      "package": "com.devweslley.bankapp",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "output": "static",
@@ -54,6 +55,12 @@
         "projectId": "2e01e888-7a89-444c-8895-a4aa05ab76f4"
       }
     },
-    "owner": "devweslley"
+    "owner": "devweslley",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2e01e888-7a89-444c-8895-a4aa05ab76f4"
+    }
   }
 }

@@ -14,9 +14,8 @@ import {
 import { COLORS } from "@/src/theme/colors";
 import { PIX_TYPE_CONFIG } from "../../constants/pixTypeConfig";
 import { PixKey } from "../../domain/models/PixKey";
-import { useDeletePixKey } from "../hooks/useDeletePixKey";
-// import { usePixStore } from "../../store/pix.store";
 import { useBottomSheetAnimation } from "../hooks/useBottomSheetAnimation";
+import { useDeletePixKey } from "../hooks/useDeletePixKey";
 
 interface Props {
   pixKey: PixKey;
@@ -28,7 +27,6 @@ export function PixKeyActionsBottomSheet({ pixKey, onClose }: Props) {
     useBottomSheetAnimation(onClose);
 
   const { remove, loading } = useDeletePixKey(closeWithAnimation);
-  // const removeKey = usePixStore((state) => state.removeKey);
 
   const config = PIX_TYPE_CONFIG[pixKey.type];
 

@@ -40,15 +40,21 @@ export default function TabLayout() {
       <Tabs
         initialRouteName="index"
         screenOptions={{
+          
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: "#5c5b5b",
           headerShown: false,
           tabBarButton: (props) => <TabBarButton {...props} />,
           tabBarStyle: {
+            // lebrar para deixa flutuante
+            // position: "absolute",
             height: 54 + insets.bottom,
             paddingBottom: insets.bottom,
+            // marginHorizontal:20 ,
             backgroundColor: COLORS.tabbarligth,
             borderTopWidth: 0,
+            // borderWidth:1,
+            // borderRadius:50
           },
         }}
       >

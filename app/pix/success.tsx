@@ -1,4 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import PixSuccessScreen from "@/src/features/pix/presentation/screens/SuccessScreen";
+import { Stack } from "expo-router";
 
 /**
  * SuccessPage
@@ -18,5 +20,17 @@ import PixSuccessScreen from "@/src/features/pix/presentation/screens/SuccessScr
  * - src/features → regras e UI
  */
 export default function SuccessPage() {
-  return <PixSuccessScreen />;
+
+  return (
+
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: '',
+        }}
+      />
+      <PixSuccessScreen />
+    </>
+  )
 }

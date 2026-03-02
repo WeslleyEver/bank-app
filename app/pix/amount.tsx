@@ -1,4 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import PixAmountScreen from "@/src/features/pix/presentation/screens/PixAmountScreen";
+import { Stack } from "expo-router";
 
 /**
  * PixAmountPage
@@ -18,5 +20,17 @@ import PixAmountScreen from "@/src/features/pix/presentation/screens/PixAmountSc
  * - src/features → regras e UI
  */
 export default function PixAmountPage() {
-  return <PixAmountScreen />;
+
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: '',
+        }}
+      />
+      <PixAmountScreen />
+    </>
+  );
+  // return <PixAmountScreen />;
 }

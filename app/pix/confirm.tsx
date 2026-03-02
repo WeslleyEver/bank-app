@@ -1,4 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import PixConfirmScreen from "@/src/features/pix/presentation/screens/ConfirmScreen";
+import { Stack } from "expo-router";
 
 /**
  * ConfirmPixPage
@@ -18,5 +20,17 @@ import PixConfirmScreen from "@/src/features/pix/presentation/screens/ConfirmScr
  * - src/features → regras e UI
  */
 export default function ConfirmPixPage() {
-  return <PixConfirmScreen />;
+  return (
+
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: '',
+        }}
+      />
+      <PixConfirmScreen />
+    </>
+  )
+  // return ;
 }

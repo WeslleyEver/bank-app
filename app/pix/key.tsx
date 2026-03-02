@@ -1,5 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import PixKeyScreen from "@/src/features/pix/presentation/screens/PixKeySreen";
-
+import { Stack } from "expo-router";
 /**
  * PixKeyPage
  *
@@ -18,5 +19,15 @@ import PixKeyScreen from "@/src/features/pix/presentation/screens/PixKeySreen";
  * - src/features → regras e UI
  */
 export default function PixKeyPage() {
-  return <PixKeyScreen />;
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: 'Transferirencia',
+        }}
+      />
+      <PixKeyScreen />
+    </>
+  )
 }

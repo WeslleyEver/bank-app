@@ -1,4 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import AreaPixScreen from "@/src/features/pix/presentation/screens/AreaPixScreen";
+import { Stack } from "expo-router";
 
 /**
  * PixPage
@@ -11,5 +13,17 @@ import AreaPixScreen from "@/src/features/pix/presentation/screens/AreaPixScreen
  * para preservar a arquitetura modular e escalável.
  */
 export default function PixPage() {
-  return <AreaPixScreen />;
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: 'Área Pix',
+          headerBackTitle: "",
+          headerBackVisible: true,
+        }}
+      />
+      <AreaPixScreen />
+    </>
+  );
 }

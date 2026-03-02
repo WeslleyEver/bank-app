@@ -1,4 +1,6 @@
+import { DEFAULT_SCREEN_OPTIONS } from "@/constants/navigation";
 import RegisterPixKeyScreen from "@/src/features/pix/presentation/screens/RegisterPixKeyScreen";
+import { Stack } from "expo-router";
 
 /**
  * RegisterPage
@@ -18,5 +20,16 @@ import RegisterPixKeyScreen from "@/src/features/pix/presentation/screens/Regist
  * - src/features → regras e UI
  */
 export default function RegisterPage() {
-  return <RegisterPixKeyScreen />;
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          ...DEFAULT_SCREEN_OPTIONS,
+          title: 'Cadastrar Chaves',
+        }}
+      />
+      <RegisterPixKeyScreen />
+    </>
+  )
+  // return ;
 }

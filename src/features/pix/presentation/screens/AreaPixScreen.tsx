@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ClipboardPixBottomSheet } from "../components/ClipboardPixBottomSheet";
+import HeaderPixScreen from "../components/HeaderPixScreen";
 import { useClipboardPix } from "../hooks/useClipboardPix";
 
 export default function AreaPixScreen() {
@@ -43,6 +44,7 @@ export default function AreaPixScreen() {
       style={{ flex: 1, backgroundColor: "#fff" }}
     >
       <View style={{ flex: 1 }}>
+        <HeaderPixScreen />
         <Text
           style={{
             fontSize: 22,

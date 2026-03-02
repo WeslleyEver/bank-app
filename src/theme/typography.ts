@@ -7,6 +7,10 @@ export const TYPOGRAPHY = {
     fontSize: 18,
     fontWeight: "600" as const,
   },
+  subtitle_2: {
+    fontSize: 16,
+    fontWeight: "600" as const,
+  },
   body: {
     fontSize: 14,
     fontWeight: "400" as const,

@@ -111,20 +111,23 @@ export default function HomeScreen() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={[TYPOGRAPHY.title, styles.title]}>Best Play</Text>
           <View style={styles.cardemprestimo}>
-            <Text style={TYPOGRAPHY.subtitle}>Empréstimos até R$ 5.000,00</Text>
+            <Text style={TYPOGRAPHY.subtitle_2}>Empréstimos até R$ 5.000,00</Text>
             <Button
               title={"Simular"}
               onPress={() => router.push("/credit")}
             ></Button>
           </View>
-          <Text style={[TYPOGRAPHY.subtitle, styles.title]}>Histórico</Text>
-          {/* onpress para o historico de transaçoes */}
-          <TouchableOpacity onPress={() => router.push("/transactions")}>
-            <Text style={[styles.linktitle]}>
-              Ver todos
-              <Ionicons name="arrow-redo-sharp" size={13} />
-            </Text>
-          </TouchableOpacity>
+          <View style={[styles.title,{flexDirection:"row", alignItems:"center",}]}>
+            <Text style={TYPOGRAPHY.subtitle}>Histórico</Text>
+            {/* onpress para o historico de transaçoes */}
+            <TouchableOpacity onPress={() => router.push("/transactions")}>
+              <Text style={[styles.linktitle]}>
+                Ver todos
+                <Ionicons name="arrow-redo-sharp" size={13} />
+              </Text>
+            </TouchableOpacity>
+          </View>
+
 
           {lastThree.map((item) => (
             <ActivityItem key={item.id} item={item} />
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   title: {
-    marginTop: SPACING.xxxl,
+    marginVertical: SPACING.xxl,
     marginHorizontal: SPACING.md,
     color: COLORS.darkcolor,
   },

@@ -48,9 +48,7 @@ export default function TabLayout() {
             height: 54 + insets.bottom,
             paddingBottom: insets.bottom,
             backgroundColor: COLORS.tabbarligth,
-            // borderWidth: 1,
             borderTopWidth: 0,
-            // borderColor: COLORS.lightcolor,
           },
         }}
       >

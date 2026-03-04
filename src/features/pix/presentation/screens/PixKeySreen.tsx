@@ -1,12 +1,14 @@
 import { COLORS } from "@/src/theme/colors";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+
 import {
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 /**
@@ -30,6 +32,9 @@ export default function PixKeyScreen() {
 
   function handleNext() {
     if (!key.trim()) return;
+
+    Keyboard.dismiss();
+
     router.push({
       pathname: "/pix/amount",
       params: { to: key },

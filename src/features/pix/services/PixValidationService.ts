@@ -3,6 +3,7 @@ import { PixKey, PixKeyType } from "../domain/models/PixKey";
 import { isValidCPF } from "../validators/cpfValidator";
 import { isValidEmail } from "../validators/emailValidator";
 import { isValidPhone } from "../validators/phoneValidator";
+import { isSuspiciousInput, sanitizePixInput } from "./pixInputSanitizer";
 
 /**
  * Representa o resultado de uma validação.
@@ -36,7 +37,12 @@ export class PixValidationService {
    * - Fluxo de transferência
    */
   static detectKeyType(value: string): PixKeyType | null {
-    const cleaned = value.trim();
+    const cleaned = sanitizePixInput(value);
+
+    if (!cleaned) return null;
+
+    //  bloqueia input suspeito
+    if (isSuspiciousInput(value)) return null;
 
     if (isValidCPF(cleaned)) return "cpf";
 
@@ -44,7 +50,6 @@ export class PixValidationService {
 
     if (isValidEmail(cleaned)) return "email";
 
-    // Chave aleatória Pix (UUID padrão Bacen)
     const randomKeyRegex =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

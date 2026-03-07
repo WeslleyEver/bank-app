@@ -22,23 +22,46 @@ import { AuthButton } from "../components/AuthButton";
 import { AuthInput } from "../components/AuthInput";
 import { useRegisterPF } from "../../hooks";
 import { registerPFInitialValues } from "../../schemas";
+import {
+  formatCPF,
+  formatPhone,
+  sanitizeDocumento,
+  sanitizePhone,
+  isValidCPF,
+  isValidPhone,
+} from "../../utils";
+import { AUTH_MESSAGES } from "../../constants";
 
 export function RegisterPFScreen() {
   const router = useRouter();
   const { register, isSubmitting, error } = useRegisterPF();
 
   const [values, setValues] = useState(registerPFInitialValues);
+  const [fieldErrors, setFieldErrors] = useState<{
+    cpf?: string;
+    telefone?: string;
+  }>({});
 
-  const update = (key: keyof typeof values) => (v: string | boolean) =>
+  const update = (key: keyof typeof values) => (v: string | boolean) => {
     setValues((prev) => ({ ...prev, [key]: v }));
+    if (key === "cpf" || key === "telefone") {
+      setFieldErrors((prev) => ({ ...prev, [key]: undefined }));
+    }
+  };
 
   const handleSubmit = async () => {
+    const errors: typeof fieldErrors = {};
+    if (!isValidCPF(values.cpf)) errors.cpf = AUTH_MESSAGES.CPF_INVALIDO;
+    if (!isValidPhone(values.telefone)) errors.telefone = AUTH_MESSAGES.TELEFONE_INVALIDO;
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     try {
       await register({
         nomeCompleto: values.nomeCompleto,
-        cpf: values.cpf,
+        cpf: sanitizeDocumento(values.cpf),
         email: values.email,
-        telefone: values.telefone,
+        telefone: sanitizePhone(values.telefone),
         senha: values.senha,
         acceptTerms: values.acceptTerms,
       });
@@ -76,8 +99,10 @@ export function RegisterPFScreen() {
         <AuthInput
           label="CPF"
           value={values.cpf}
-          onChangeText={update("cpf")}
-          placeholder="Somente números"
+          onChangeText={(v) => update("cpf")(formatCPF(v))}
+          placeholder="000.000.000-00"
+          keyboardType="numeric"
+          error={fieldErrors.cpf}
         />
         <AuthInput
           label="E-mail"
@@ -90,8 +115,10 @@ export function RegisterPFScreen() {
         <AuthInput
           label="Telefone"
           value={values.telefone}
-          onChangeText={update("telefone")}
-          placeholder="Somente números"
+          onChangeText={(v) => update("telefone")(formatPhone(v))}
+          placeholder="(00) 00000-0000"
+          keyboardType="numeric"
+          error={fieldErrors.telefone}
         />
         <AuthInput
           label="Senha"

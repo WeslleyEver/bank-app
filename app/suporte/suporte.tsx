@@ -1,9 +1,11 @@
+import { LogoutButton } from "@/src/components/debug/LogoutButton";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function SuporteScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Suporte</Text>
+      <LogoutButton />
     </View>
   );
 }

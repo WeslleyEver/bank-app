@@ -66,7 +66,7 @@ export default function HomeScreen() {
     {
       id: "1",
       title: "Best Play",
-      image: require("@/assets/images/bg-best.png"),
+      image: require("@/assets/images/best-bg.png"),
       actionText: "Saiba mais",
       description:
         "Nossa missão é democratizar o acesso à audiência, conectando músicas a ouvintes reais por meio de soluções de curadoria de playlists, gestão de tráfego pago, estratégias de lançamento e educação musical.",
@@ -74,7 +74,7 @@ export default function HomeScreen() {
     {
       id: "2",
       title: "Bean Music",
-      image: require("@/assets/images/hero-back.png"),
+      image: require("@/assets/images/bean-bg.png"),
       description:
         "Lance, Promova e Monetize Suas Músicas em um Só Lugar! Conheça a nossa Startup e Distribuidora, a Bean Music.",
       actionText: "Saiba mais",
@@ -82,7 +82,7 @@ export default function HomeScreen() {
     {
       id: "3",
       title: "VY-B",
-      image: require("@/assets/images/bg-3.jpeg"),
+      image: require("@/assets/images/vyb-bg.png"),
       actionText: "Saiba mais",
       description:
         "Crie e venda produtos com sua marca em uma plataforma integrada e pronta para escalar sua receita.",
@@ -90,7 +90,7 @@ export default function HomeScreen() {
     {
       id: "4",
       title: "Engage",
-      image: "https://via.placeholder.com/150",
+      image: require("@/assets/images/engage-bg.png"),
       actionText: "Saiba mais",
       description:
         "Agência de marketing digital 5.0, movida por dados e insights, que une estratégia, performance e criatividade para gerar resultados reais com atendimento próximo, humano e eficiente.",
@@ -98,7 +98,7 @@ export default function HomeScreen() {
     {
       id: "5",
       title: "GY",
-      image: "https://via.placeholder.com/150",
+      image: require("@/assets/images/GY.png"),
       actionText: "Saiba mais",
       description:
         "15 anos de mercado, já trabalhamos com mais de 300 artistas de diferentes momentos da carreira, do inicial ao artista com gravadora.",
@@ -111,13 +111,20 @@ export default function HomeScreen() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={[TYPOGRAPHY.title, styles.title]}>Best Play</Text>
           <View style={styles.cardemprestimo}>
-            <Text style={TYPOGRAPHY.subtitle_2}>Empréstimos até R$ 5.000,00</Text>
+            <Text style={TYPOGRAPHY.subtitle_2}>
+              Empréstimos até R$ 5.000,00
+            </Text>
             <Button
               title={"Simular"}
               onPress={() => router.push("/credit")}
             ></Button>
           </View>
-          <View style={[styles.title,{flexDirection:"row", alignItems:"center",}]}>
+          <View
+            style={[
+              styles.title,
+              { flexDirection: "row", alignItems: "center" },
+            ]}
+          >
             <Text style={TYPOGRAPHY.subtitle}>Histórico</Text>
             {/* onpress para o historico de transaçoes */}
             <TouchableOpacity onPress={() => router.push("/transactions")}>
@@ -127,7 +134,6 @@ export default function HomeScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-
 
           {lastThree.map((item) => (
             <ActivityItem key={item.id} item={item} />

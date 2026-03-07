@@ -1,9 +1,9 @@
 /**
  * Serviço de cadastro de Pessoa Física.
- * Orquestra: mapper → API.
+ * Orquestra: mapper → datasource.
  */
 
-import { registerPFApi } from "../api/auth.api";
+import { authDataSourceFactory } from "../data/datasources/authDataSourceFactory";
 import { mapRegisterPFToApiRequest } from "../mappers/auth.mapper";
 import type { RegisterPFRequest } from "../types/register-pf.types";
 import type { OnboardingStatus } from "../types/onboarding-status.types";
@@ -17,8 +17,9 @@ export interface RegisterPFResult {
 
 export const registerPFService = {
   async execute(data: RegisterPFRequest): Promise<RegisterPFResult> {
+    const dataSource = authDataSourceFactory();
     const apiRequest = mapRegisterPFToApiRequest(data);
-    const apiData = await registerPFApi(apiRequest);
+    const apiData = await dataSource.registerPF(apiRequest);
     return {
       userId: apiData.userId,
       tipoConta: apiData.tipoConta,

@@ -1,9 +1,11 @@
+import { LogoutButton } from "@/src/components/debug/LogoutButton";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function User() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Perfil do Usuário</Text>
+      <LogoutButton />
     </View>
   );
 }

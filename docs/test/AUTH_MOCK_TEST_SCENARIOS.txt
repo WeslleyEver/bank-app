@@ -1,0 +1,236 @@
+AUTH MOCK TEST SCENARIOS
+========================
+
+Este arquivo documenta os cenários de teste do módulo de autenticação usando mocks.
+
+Configuração necessária:
+USE_AUTH_MOCKS = true
+
+Local:
+src/features/auth/constants/auth-mock.constants.ts
+
+
+---------------------------------------
+LOGIN - CENÁRIOS DE TESTE
+---------------------------------------
+
+1) Login aprovado
+Documento: 11111111111
+Senha: 123456
+
+Resultado esperado:
+- Login com sucesso
+- Sessão salva
+- Bootstrap executa /auth/me
+- resolveAuthRoute envia para área autenticada
+- Usuário entra no app
+
+
+---------------------------------------
+
+2) Login onboarding pendente
+Documento: 22222222222
+Senha: 123456
+
+Resultado esperado:
+- Login com sucesso
+- onboardingStatus = pendente
+- Navegação para:
+
+/auth/onboarding/pendente
+
+
+---------------------------------------
+
+3) Login em análise
+Documento: 33333333333
+Senha: 123456
+
+Resultado esperado:
+- Login com sucesso
+- onboardingStatus = em_analise
+- Navegação para:
+
+/auth/onboarding/em-analise
+
+
+---------------------------------------
+
+4) Login documentos pendentes
+Documento: 44444444444
+Senha: 123456
+
+Resultado esperado:
+- Login com sucesso
+- onboardingStatus = documentos_pendentes
+- Navegação para:
+
+/auth/onboarding/documentos-pendentes
+
+
+---------------------------------------
+
+5) Login rejeitado
+Documento: 55555555555
+Senha: 123456
+
+Resultado esperado:
+- Login com sucesso
+- onboardingStatus = rejeitado
+- Navegação para:
+
+/auth/onboarding/rejeitado
+
+
+---------------------------------------
+
+6) Login erro
+Documento: 00000000000
+Senha: 123456
+
+Resultado esperado:
+- Erro de autenticação
+- Não salva sessão
+- Permanece na tela de login
+
+
+---------------------------------------
+CADASTRO PF - CENÁRIOS
+---------------------------------------
+
+Fluxo esperado:
+
+Cadastro PF
+→ sucesso
+→ tela "Cadastro recebido"
+→ usuário retorna ao login
+→ login aplica onboardingStatus
+
+
+Teste sugerido:
+
+CPF: 22222222222
+
+Resultado esperado após login:
+- onboardingStatus = pendente
+- rota:
+
+/auth/onboarding/pendente
+
+
+---------------------------------------
+CADASTRO PJ - CENÁRIOS
+---------------------------------------
+
+No cadastro PJ o cenário é definido por:
+
+representanteLegal.cpf
+
+Fallback:
+cnpj
+
+Fluxo esperado:
+
+Cadastro PJ
+→ sucesso
+→ tela "Cadastro recebido"
+→ usuário retorna ao login
+→ login aplica onboardingStatus
+
+
+Teste sugerido:
+
+representanteLegal.cpf = 22222222222
+
+Login depois do cadastro:
+
+Documento: 22222222222
+Senha: 123456
+
+Resultado esperado:
+
+/auth/onboarding/pendente
+
+
+---------------------------------------
+BOOTSTRAP DE SESSÃO
+---------------------------------------
+
+Fluxo esperado:
+
+login
+→ persistSession salva tokens
+→ fechar app
+→ abrir app novamente
+→ hydrateSession executa
+→ dataSource.me(accessToken)
+→ resolveAuthRoute
+→ usuário retorna para a mesma área
+
+
+---------------------------------------
+TOKENS MOCK
+---------------------------------------
+
+Formato do access token:
+
+mock-access-{documento}
+
+Exemplo:
+
+mock-access-11111111111
+
+
+Formato do refresh token:
+
+mock-refresh-{documento}
+
+
+---------------------------------------
+DELAY MOCK
+---------------------------------------
+
+Todas as requisições simulam delay de:
+
+300 ms
+
+
+---------------------------------------
+NOTAS IMPORTANTES
+---------------------------------------
+
+1) Senha padrão dos mocks
+
+123456
+
+
+2) Os documentos usados nos cenários são apenas para testes.
+
+
+3) Os mocks não criam usuários persistentes.
+Os cenários são definidos pelo documento digitado.
+
+
+4) Cadastro PF e PJ não fazem login automático.
+O usuário precisa logar após concluir o cadastro.
+
+
+---------------------------------------
+PRÓXIMA ETAPA DO PROJETO
+---------------------------------------
+
+Security Module (PIN transacional)
+
+Fluxo:
+
+Primeiro login
+→ criar PIN
+→ confirmar PIN
+→ salvar PIN
+
+Operações sensíveis (ex: Pix)
+
+→ solicitar PIN
+→ validar PIN
+→ solicitar OTP
+→ executar operação

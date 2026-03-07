@@ -22,28 +22,56 @@ import { AuthButton } from "../components/AuthButton";
 import { AuthInput } from "../components/AuthInput";
 import { useRegisterPJ } from "../../hooks";
 import { registerPJInitialValues } from "../../schemas";
+import {
+  formatCPF,
+  formatCNPJ,
+  formatPhone,
+  sanitizeDocumento,
+  sanitizePhone,
+  isValidCPF,
+  isValidCNPJ,
+  isValidPhone,
+} from "../../utils";
+import { AUTH_MESSAGES } from "../../constants";
 
 export function RegisterPJScreen() {
   const router = useRouter();
   const { register, isSubmitting, error } = useRegisterPJ();
 
   const [values, setValues] = useState(registerPJInitialValues);
+  const [fieldErrors, setFieldErrors] = useState<{
+    cnpj?: string;
+    telefone?: string;
+    representanteCpf?: string;
+  }>({});
 
-  const update = (key: keyof typeof values) => (v: string | boolean) =>
+  const update = (key: keyof typeof values) => (v: string | boolean) => {
     setValues((prev) => ({ ...prev, [key]: v }));
+    if (key === "cnpj" || key === "telefone" || key === "representanteCpf") {
+      setFieldErrors((prev) => ({ ...prev, [key]: undefined }));
+    }
+  };
 
   const handleSubmit = async () => {
+    const errors: typeof fieldErrors = {};
+    if (!isValidCNPJ(values.cnpj)) errors.cnpj = AUTH_MESSAGES.CNPJ_INVALIDO;
+    if (!isValidPhone(values.telefone)) errors.telefone = AUTH_MESSAGES.TELEFONE_INVALIDO;
+    if (!isValidCPF(values.representanteCpf))
+      errors.representanteCpf = AUTH_MESSAGES.CPF_INVALIDO;
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     try {
       await register({
         razaoSocial: values.razaoSocial,
         nomeFantasia: values.nomeFantasia || undefined,
-        cnpj: values.cnpj,
+        cnpj: sanitizeDocumento(values.cnpj),
         email: values.email,
-        telefone: values.telefone,
+        telefone: sanitizePhone(values.telefone),
         senha: values.senha,
         representanteLegal: {
           nome: values.representanteNome,
-          cpf: values.representanteCpf,
+          cpf: sanitizeDocumento(values.representanteCpf),
         },
         acceptTerms: values.acceptTerms,
       });
@@ -87,8 +115,10 @@ export function RegisterPJScreen() {
         <AuthInput
           label="CNPJ"
           value={values.cnpj}
-          onChangeText={update("cnpj")}
-          placeholder="Somente números"
+          onChangeText={(v) => update("cnpj")(formatCNPJ(v))}
+          placeholder="00.000.000/0000-00"
+          keyboardType="numeric"
+          error={fieldErrors.cnpj}
         />
         <AuthInput
           label="E-mail"
@@ -101,8 +131,10 @@ export function RegisterPJScreen() {
         <AuthInput
           label="Telefone"
           value={values.telefone}
-          onChangeText={update("telefone")}
-          placeholder="Somente números"
+          onChangeText={(v) => update("telefone")(formatPhone(v))}
+          placeholder="(00) 00000-0000"
+          keyboardType="numeric"
+          error={fieldErrors.telefone}
         />
         <AuthInput
           label="Nome do representante legal"
@@ -113,8 +145,10 @@ export function RegisterPJScreen() {
         <AuthInput
           label="CPF do representante"
           value={values.representanteCpf}
-          onChangeText={update("representanteCpf")}
-          placeholder="Somente números"
+          onChangeText={(v) => update("representanteCpf")(formatCPF(v))}
+          placeholder="000.000.000-00"
+          keyboardType="numeric"
+          error={fieldErrors.representanteCpf}
         />
         <AuthInput
           label="Senha"

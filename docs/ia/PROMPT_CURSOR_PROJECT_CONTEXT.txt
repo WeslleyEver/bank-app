@@ -1,0 +1,145 @@
+
+PROMPT_CURSOR_PROJECT_CONTEXT.txt
+
+Você está trabalhando em um aplicativo mobile bancário.
+
+Tecnologias:
+
+- Expo
+- React Native
+- TypeScript
+- Expo Router
+
+Arquitetura baseada em módulos por feature.
+
+Fluxo de camadas:
+
+screen → hook → service → data source → api/mock → mappers → store
+
+---
+
+Estado atual do projeto:
+
+O módulo AUTH está completamente implementado.
+
+Funcionalidades prontas:
+
+- cadastro PF
+- cadastro PJ
+- login
+- forgot password
+- logout
+- bootstrap de sessão
+- hidratação via /auth/me
+- navegação baseada em onboardingStatus
+
+---
+
+Arquitetura de dados implementada:
+
+AuthDataSource interface
+
+Implementações:
+
+backendAuthDataSource
+mockAuthDataSource
+
+Factory:
+
+authDataSourceFactory()
+
+Controle:
+
+USE_AUTH_MOCKS
+
+Fluxo:
+
+screen
+→ hook
+→ service
+→ dataSourceFactory
+→ backend ou mock
+
+---
+
+Sistema de mocks implementado.
+
+Cenários disponíveis:
+
+11111111111 → aprovado
+22222222222 → pendente
+33333333333 → em_analise
+44444444444 → documentos_pendentes
+55555555555 → rejeitado
+00000000000 → erro
+
+Senha padrão:
+
+123456
+
+---
+
+Validações e máscaras implementadas:
+
+CPF
+CNPJ
+Telefone
+
+Funções criadas:
+
+sanitizeDocumento
+sanitizePhone
+formatCPF
+formatCNPJ
+formatPhone
+isValidCPF
+isValidCNPJ
+isValidPhone
+
+---
+
+Objetivo agora:
+
+Continuar o desenvolvimento mantendo a arquitetura existente.
+
+Regras:
+
+- não quebrar arquitetura atual
+- não modificar auth sem necessidade
+- manter separação de camadas
+- seguir padrão de feature modules
+
+---
+
+Próximo módulo a ser desenvolvido:
+
+SECURITY
+
+Objetivo:
+
+Implementar PIN transacional.
+
+Fluxo esperado:
+
+primeiro login
+→ criar PIN
+→ confirmar PIN
+→ salvar PIN
+
+Uso futuro:
+
+Pix
+Transferências
+Pagamentos
+
+Fluxo de segurança:
+
+ação sensível
+→ solicitar PIN
+→ validar PIN
+→ solicitar OTP
+→ executar operação
+
+---
+
+Sempre respeitar a arquitetura existente antes de implementar novas funcionalidades.

@@ -4,10 +4,10 @@
  * - Salvar tokens no storage seguro
  * - Limpar tokens no logout
  * - Carregar tokens armazenados
- * - Hidratar sessão via endpoint /me (usuário real)
+ * - Hidratar sessão via datasource.me (usuário real ou mock)
  */
 
-import { meApi } from "../api/auth.api";
+import { authDataSourceFactory } from "../data/datasources/authDataSourceFactory";
 import { mapApiUserToAuthenticatedUser } from "../mappers/session.mapper";
 import { secureStorageService } from "@/src/features/security/services";
 import type { AuthSession } from "../types/auth-session.types";
@@ -21,6 +21,8 @@ export const sessionService = {
   },
 
   async clearSession(): Promise<void> {
+    const dataSource = authDataSourceFactory();
+    await dataSource.logout();
     await secureStorageService.clearTokens();
   },
 
@@ -36,7 +38,7 @@ export const sessionService = {
   },
 
   /**
-   * Hidrata sessão com usuário real via GET /auth/me.
+   * Hidrata sessão com usuário real via GET /auth/me (ou mock).
    * Usado após login ou ao reabrir app com token salvo.
    */
   async hydrateSession(
@@ -44,7 +46,8 @@ export const sessionService = {
     refreshToken: string | null
   ): Promise<AuthSession | null> {
     try {
-      const apiUser = await meApi(accessToken);
+      const dataSource = authDataSourceFactory();
+      const apiUser = await dataSource.me(accessToken);
       const user = mapApiUserToAuthenticatedUser(apiUser);
       return {
         accessToken,

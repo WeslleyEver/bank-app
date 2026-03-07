@@ -3,7 +3,7 @@
  * Usa documento (CPF ou CNPJ).
  */
 
-import { forgotPasswordApi } from "../api/auth.api";
+import { authDataSourceFactory } from "../data/datasources/authDataSourceFactory";
 import type { ForgotPasswordRequest } from "../types/forgot-password.types";
 
 export interface ForgotPasswordResult {
@@ -12,7 +12,8 @@ export interface ForgotPasswordResult {
 
 export const forgotPasswordService = {
   async execute(data: ForgotPasswordRequest): Promise<ForgotPasswordResult> {
-    const apiData = await forgotPasswordApi({ documento: data.documento });
+    const dataSource = authDataSourceFactory();
+    const apiData = await dataSource.forgotPassword({ documento: data.documento });
     return { message: apiData.message };
   },
 };

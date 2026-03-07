@@ -22,6 +22,12 @@ import { AuthInput } from "../components/AuthInput";
 import { useLogin } from "../../hooks";
 import { loginInitialValues } from "../../schemas";
 import { useAuthStore } from "../../store/useAuthStore";
+import {
+  formatDocumentoDinamico,
+  sanitizeDocumento,
+  isValidDocumentoLogin,
+} from "../../utils";
+import { AUTH_MESSAGES } from "../../constants";
 
 export function LoginScreen() {
   const router = useRouter();
@@ -31,11 +37,20 @@ export function LoginScreen() {
 
   const [documento, setDocumento] = useState(loginInitialValues.documento);
   const [senha, setSenha] = useState(loginInitialValues.senha);
+  const [documentoError, setDocumentoError] = useState<string | undefined>();
 
   const handleSubmit = async () => {
     clearError();
+    setDocumentoError(undefined);
+    if (!isValidDocumentoLogin(documento)) {
+      setDocumentoError(AUTH_MESSAGES.DOCUMENTO_INVALIDO);
+      return;
+    }
     try {
-      await login({ documento, senha });
+      await login({
+        documento: sanitizeDocumento(documento),
+        senha,
+      });
     } catch {
       // erro tratado no store
     }
@@ -64,9 +79,10 @@ export function LoginScreen() {
         <AuthInput
           label="CPF ou CNPJ"
           value={documento}
-          onChangeText={setDocumento}
-          placeholder="Somente números"
+          onChangeText={(v) => setDocumento(formatDocumentoDinamico(v))}
+          placeholder="000.000.000-00 ou 00.000.000/0000-00"
           keyboardType="numeric"
+          error={documentoError}
         />
         <AuthInput
           label="Senha"

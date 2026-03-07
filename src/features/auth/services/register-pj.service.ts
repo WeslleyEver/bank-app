@@ -1,9 +1,9 @@
 /**
  * Serviço de cadastro de Pessoa Jurídica.
- * Orquestra: mapper → API.
+ * Orquestra: mapper → datasource.
  */
 
-import { registerPJApi } from "../api/auth.api";
+import { authDataSourceFactory } from "../data/datasources/authDataSourceFactory";
 import { mapRegisterPJToApiRequest } from "../mappers/auth.mapper";
 import type { RegisterPJRequest } from "../types/register-pj.types";
 import type { OnboardingStatus } from "../types/onboarding-status.types";
@@ -17,8 +17,9 @@ export interface RegisterPJResult {
 
 export const registerPJService = {
   async execute(data: RegisterPJRequest): Promise<RegisterPJResult> {
+    const dataSource = authDataSourceFactory();
     const apiRequest = mapRegisterPJToApiRequest(data);
-    const apiData = await registerPJApi(apiRequest);
+    const apiData = await dataSource.registerPJ(apiRequest);
     return {
       userId: apiData.userId,
       tipoConta: apiData.tipoConta,

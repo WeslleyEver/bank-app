@@ -18,7 +18,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": true,
+      "edgeToEdgeEnabled": false,
       "predictiveBackGestureEnabled": false,
       "package": "com.devweslley.bankapp",
       "softwareKeyboardLayoutMode": "pan"
@@ -28,9 +28,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      [
-        "expo-system-ui"
-      ],
+      ["expo-system-ui"],
       "expo-router",
       [
         "expo-splash-screen",

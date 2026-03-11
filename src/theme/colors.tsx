@@ -10,3 +10,4 @@ export const COLORS = {
   textPrimary: "#FFFFFF",
   textSecondary: "#94A3B8",
 };
+// backgroundColor: "#F0F2F5",

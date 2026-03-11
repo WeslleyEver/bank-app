@@ -22,43 +22,41 @@ export function RegisterFlowPhaseWelcome({ onSelectType, onGoToLogin }: Props) {
     <View style={styles.container}>
       <View style={styles.content}>
         <FadeInUp delay={360} distance={8}>
-        <Text style={styles.title}>BP Finance</Text>
-        <Text style={styles.subtitle}>
-          Frase de boas-vindas
-        </Text>
+          <Text style={styles.title}>BP Finance</Text>
+          <Text style={styles.subtitle}>Frase de boas-vindas</Text>
         </FadeInUp>
 
         <FadeInUp delay={660} distance={8}>
-        <View style={styles.optionsRow}>
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => onSelectType("PF")}
-            activeOpacity={0.8}
-          >
-            <View style={styles.iconWrap}>
-              <Ionicons name="person" size={38} color={COLORS.primary} />
-            </View>
-            <Text style={styles.optionLabel}>Pessoa Física</Text>
-          </TouchableOpacity>
+          <View style={styles.optionsRow}>
+            <TouchableOpacity
+              style={styles.option}
+              onPress={() => onSelectType("PF")}
+              activeOpacity={0.8}
+            >
+              <View style={styles.iconWrap}>
+                <Ionicons name="person" size={38} color={COLORS.primary} />
+              </View>
+              <Text style={styles.optionLabel}>Pessoa Física</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => onSelectType("PJ")}
-            activeOpacity={0.8}
-          >
-            <View style={styles.iconWrap}>
-              <Ionicons name="business" size={38} color={COLORS.primary} />
-            </View>
-            <Text style={styles.optionLabel}>Pessoa Jurídica</Text>
+            <TouchableOpacity
+              style={styles.option}
+              onPress={() => onSelectType("PJ")}
+              activeOpacity={0.8}
+            >
+              <View style={styles.iconWrap}>
+                <Ionicons name="business" size={38} color={COLORS.primary} />
+              </View>
+              <Text style={styles.optionLabel}>Pessoa Jurídica</Text>
+            </TouchableOpacity>
+          </View>
+        </FadeInUp>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Já tem conta? </Text>
+          <TouchableOpacity onPress={onGoToLogin}>
+            <Text style={styles.footerLink}>Entrar</Text>
           </TouchableOpacity>
-        </View></FadeInUp>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Já tem conta? </Text>
-        <TouchableOpacity onPress={onGoToLogin}>
-          <Text style={styles.footerLink}>Entrar</Text>
-        </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -67,9 +65,10 @@ export function RegisterFlowPhaseWelcome({ onSelectType, onGoToLogin }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background_white,
+    // backgroundColor: COLORS.background_white,
+    backgroundColor: "#F0F2F5",
     padding: SPACING.xl,
-    justifyContent: "space-between",
+    // justifyContent: "",
   },
   content: {
     flex: 1,
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingBottom: SPACING.xl,
+    paddingTop: SPACING.xxxl,
   },
   footerText: {
     ...TYPOGRAPHY.body,

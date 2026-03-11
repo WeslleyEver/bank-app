@@ -19,7 +19,7 @@ export default function RootLayout() {
   useEffect(() => {
     async function setup() {
       await SystemUI.setBackgroundColorAsync(COLORS.tabbarligth);
-      await NavigationBar.setBackgroundColorAsync(COLORS.tabbarligth);
+      // await NavigationBar.setBackgroundColorAsync(COLORS.tabbarligth);
       await NavigationBar.setButtonStyleAsync("dark");
     }
     setup();

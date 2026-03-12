@@ -2,7 +2,7 @@
  * Stepper horizontal animado do register flow.
  * Exibe bolinhas para cada etapa com linha de progresso animada.
  * Mostra label com progresso e título da etapa atual.
- * 
+ *
  * Estados visuais:
  * - Concluída: bolinha preenchida (primary)
  * - Atual: bolinha com borda (primary) + fundo branco
@@ -39,7 +39,8 @@ export function RegisterStepProgress({ currentStepIndex, steps }: Props) {
   const progress = useSharedValue(0);
 
   useEffect(() => {
-    const targetProgress = totalSteps > 1 ? currentStepIndex / (totalSteps - 1) : 0;
+    const targetProgress =
+      totalSteps > 1 ? currentStepIndex / (totalSteps - 1) : 0;
     progress.value = withTiming(targetProgress, {
       duration: ANIMATION_DURATION,
       easing: EASING,
@@ -96,9 +97,15 @@ function StepDot({ index, currentStep, totalSteps }: StepDotProps) {
 
   useEffect(() => {
     if (isCurrent) {
-      scale.value = withTiming(1.15, { duration: ANIMATION_DURATION, easing: EASING });
+      scale.value = withTiming(1.15, {
+        duration: ANIMATION_DURATION,
+        easing: EASING,
+      });
     } else {
-      scale.value = withTiming(1, { duration: ANIMATION_DURATION, easing: EASING });
+      scale.value = withTiming(1, {
+        duration: ANIMATION_DURATION,
+        easing: EASING,
+      });
     }
   }, [isCurrent]);
 
@@ -117,11 +124,7 @@ function StepDot({ index, currentStep, totalSteps }: StepDotProps) {
 
   return (
     <Animated.View
-      style={[
-        styles.dotWrapper,
-        { left: `${position}%` },
-        animatedStyle,
-      ]}
+      style={[styles.dotWrapper, { left: `${position}%` }, animatedStyle]}
     >
       <View style={dotStyle}>
         {isCompleted && <View style={styles.dotInnerCompleted} />}
@@ -132,6 +135,7 @@ function StepDot({ index, currentStep, totalSteps }: StepDotProps) {
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: SPACING.md,
     marginBottom: SPACING.lg,
   },
   stepperContainer: {

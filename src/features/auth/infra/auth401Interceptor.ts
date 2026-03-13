@@ -6,7 +6,7 @@
  * - Nunca tenta refresh na própria rota de refresh
  * - Usa flag interna _authRetried para evitar loop no reenvio
  * - Lock simples evita múltiplos refreshes simultâneos
- * - Em falha no refresh: limpa sessão via sessionManager
+ * - Em falha no refresh: invalida sessão via fluxo oficial (store.logout)
  * - Não faz navegação; apenas atualiza estado (store observa e reage)
  */
 
@@ -110,14 +110,7 @@ export const auth401Interceptor = {
 
     if (!refreshResult.success) {
       authLogger.warn("auth401.refresh_failed", { code: refreshResult.error.code });
-      const clearResult = await sessionManager.clear();
-      if (clearResult.success) {
-        useAuthStore.getState().setSession(null);
-      } else {
-        authLogger.error("auth401.session_clear_failed", {
-          code: clearResult.error?.code ?? "UNKNOWN",
-        });
-      }
+      await useAuthStore.getState().logout();
       return context;
     }
 

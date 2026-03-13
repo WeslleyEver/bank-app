@@ -12,7 +12,7 @@ export default function Index() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace("/welcome" as Href);
+      router.replace("/loading" as Href);
     }, SPLASH_DURATION_MS);
 
     return () => clearTimeout(timer);

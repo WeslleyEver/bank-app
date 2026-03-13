@@ -1,5 +1,4 @@
 import { AUTH_ROUTES } from "@/src/features/auth/constants/auth-routes.constants";
-import { useSessionBootstrap } from "@/src/features/auth/hooks/useSessionBootstrap";
 import { AuthButton } from "@/src/features/auth/presentation/components/AuthButton";
 import { FadeInLeft } from "@/src/shared/components/animations";
 import {
@@ -9,7 +8,6 @@ import { COLORS } from "@/src/theme/colors";
 import { SPACING } from "@/src/theme/spacing";
 import { TYPOGRAPHY } from "@/src/theme/typography";
 import { Href, useRouter } from "expo-router";
-import { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,17 +17,6 @@ import {
 
 export default function WelcomeScreen() {
   const router = useRouter();
-  const { isBootstrapping, resolvedRoute } = useSessionBootstrap();
-
-  useEffect(() => {
-    if (!isBootstrapping && resolvedRoute && resolvedRoute !== AUTH_ROUTES.LOGIN) {
-      router.replace(resolvedRoute as Href);
-    }
-  }, [isBootstrapping, resolvedRoute, router]);
-
-  if (!isBootstrapping && resolvedRoute && resolvedRoute !== AUTH_ROUTES.LOGIN) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>
@@ -46,7 +33,7 @@ export default function WelcomeScreen() {
         <FadeInUp delay={860} distance={12}>
           <AuthButton
             title="Entrar"
-            onPress={() => router.push("/auth/login" as Href)}
+            onPress={() => router.push(AUTH_ROUTES.LOGIN as Href)}
             style={styles.primaryButton}
           />
         </FadeInUp>

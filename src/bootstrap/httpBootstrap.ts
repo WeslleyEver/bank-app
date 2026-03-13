@@ -12,13 +12,21 @@
 import { httpClient } from "../shared/api";
 import { authTokenProvider, auth401Interceptor } from "../features/auth/infra";
 
+let isHttpClientInitialized = false;
+
 /**
  * Inicializa o httpClient com os providers e interceptors necessários.
  * Deve ser chamado uma vez durante o startup da aplicação.
  */
 export function initializeHttpClient(): void {
+  if (isHttpClientInitialized) {
+    return;
+  }
+
   httpClient.setTokenProvider(authTokenProvider);
   httpClient.addResponseInterceptor(auth401Interceptor);
+
+  isHttpClientInitialized = true;
 
   // Quando implementado, adicionar DeviceProvider:
   // httpClient.setDeviceProvider(deviceHeadersProvider);
@@ -33,4 +41,5 @@ export function resetHttpClient(): void {
   httpClient.clearDeviceProvider();
   httpClient.clearAuthToken();
   httpClient.removeInterceptor(auth401Interceptor.name);
+  isHttpClientInitialized = false;
 }

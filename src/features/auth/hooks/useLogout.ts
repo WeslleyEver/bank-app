@@ -13,8 +13,10 @@ export function useLogout() {
   const logoutStore = useAuthStore((s) => s.logout);
 
   const logout = useCallback(async () => {
-    await logoutStore();
-    router.replace(AUTH_ROUTES.LOGIN as Href);
+    const result = await logoutStore();
+    if (result.success) {
+      router.replace(AUTH_ROUTES.LOGIN as Href);
+    }
   }, [logoutStore, router]);
 
   return { logout };

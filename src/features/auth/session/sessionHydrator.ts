@@ -53,6 +53,7 @@ export const sessionHydrator = {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken ?? undefined,
         user,
+        ...(tokens.expiresAt != null && { expiresAt: tokens.expiresAt }),
       };
 
       return {

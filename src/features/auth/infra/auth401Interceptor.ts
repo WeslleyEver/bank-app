@@ -87,7 +87,7 @@ export const auth401Interceptor = {
   name: INTERCEPTOR_NAME,
 
   async onResponse<T>(context: ResponseContext<T>): Promise<ResponseContext<T>> {
-    const { request, response, status } = context;
+    const { request, status } = context;
 
     if (status !== 401) {
       return context;
@@ -110,8 +110,14 @@ export const auth401Interceptor = {
 
     if (!refreshResult.success) {
       authLogger.warn("auth401.refresh_failed", { code: refreshResult.error.code });
-      await sessionManager.clear();
-      useAuthStore.getState().setSession(null);
+      const clearResult = await sessionManager.clear();
+      if (clearResult.success) {
+        useAuthStore.getState().setSession(null);
+      } else {
+        authLogger.error("auth401.session_clear_failed", {
+          code: clearResult.error?.code ?? "UNKNOWN",
+        });
+      }
       return context;
     }
 

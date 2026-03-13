@@ -26,7 +26,7 @@ type AuthState = {
   setInitialized: (initialized: boolean) => void;
 
   login: (session: AuthSession) => void;
-  logout: () => Promise<void>;
+  logout: () => Promise<{ success: boolean }>;
   loadStoredSession: () => Promise<void>;
   clearError: () => void;
 };
@@ -66,13 +66,16 @@ export const useAuthStore = create<AuthState>()((set) => ({
     }),
 
   logout: async () => {
-    await sessionManager.clear();
-    set({
-      session: null,
-      isAuthenticated: false,
-      error: null,
-      authError: null,
-    });
+    const clearResult = await sessionManager.clear();
+    if (clearResult.success) {
+      set({
+        session: null,
+        isAuthenticated: false,
+        error: null,
+        authError: null,
+      });
+    }
+    return { success: clearResult.success };
   },
 
   loadStoredSession: async () => {
@@ -85,7 +88,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
         isAuthenticated: true,
       });
     } else {
-      set({ isInitialized: true, isAuthenticated: false });
+      set({
+        isInitialized: true,
+        isAuthenticated: false,
+        session: null,
+      });
     }
   },
 

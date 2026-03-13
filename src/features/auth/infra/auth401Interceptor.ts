@@ -13,8 +13,9 @@
 import { httpClient } from "../../../shared/api";
 import type { ResponseContext, RequestContext } from "../../../shared/api";
 import { refreshTokenService } from "../services/refreshToken.service";
-import { sessionStorage, sessionManager } from "../session";
+import { sessionManager } from "../session";
 import { useAuthStore } from "../store/useAuthStore";
+import { authLogger } from "../observability/authLogger";
 
 const INTERCEPTOR_NAME = "auth-401";
 const REFRESH_ENDPOINT_PATH = "/auth/refresh";
@@ -100,20 +101,31 @@ export const auth401Interceptor = {
       return context;
     }
 
+    authLogger.warn("auth401.received", {
+      method: request.method,
+      path: authLogger.safePath(request.url),
+    });
+
     const refreshResult = await getOrStartRefresh();
 
     if (!refreshResult.success) {
+      authLogger.warn("auth401.refresh_failed", { code: refreshResult.error.code });
       await sessionManager.clear();
       useAuthStore.getState().setSession(null);
       return context;
     }
 
-    await sessionStorage.saveTokens({
+    authLogger.info("auth401.refresh_success");
+    await sessionManager.applyRefreshedTokens({
       accessToken: refreshResult.accessToken,
       refreshToken: refreshResult.refreshToken,
       expiresAt: refreshResult.expiresAt,
     });
 
+    authLogger.info("auth401.retrying", {
+      method: request.method,
+      path: authLogger.safePath(request.url),
+    });
     return executeRetry<T>(request);
   },
 };

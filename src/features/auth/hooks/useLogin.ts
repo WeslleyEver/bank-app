@@ -18,6 +18,7 @@ import { loginService } from "../services/login.service";
 import { resolveAuthRoute } from "../utils/resolve-auth-route.util";
 import { authErrorMapper } from "../errors";
 import { isValidDocumentoLogin, sanitizeDocumento } from "../utils";
+import { authLogger } from "../observability/authLogger";
 import { AUTH_MESSAGES } from "../constants";
 
 /**
@@ -106,6 +107,7 @@ export function useLogin() {
         router.replace(route as Href);
       } catch (e) {
         const error = authErrorMapper.fromError(e);
+        authLogger.warn("login.failed", { code: error.code });
         setAuthError(error);
         throw error;
       } finally {

@@ -16,5 +16,8 @@ export const MOCK_DOCUMENT_KEYS = [
   "44444444444",
   "55555555555",
   "00000000000",
+  "99999999999", // cenário: erro de rede
+  "88888888888", // cenário: timeout (usa networkError por enquanto)
+  "77777777777", // cenário: sessão expirada (expiresIn: 0)
   "11111111000195", // CNPJ para testes de cadastro PJ
 ] as const;

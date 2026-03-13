@@ -20,6 +20,7 @@ import type {
 import { sessionStorage } from "./sessionStorage";
 import { sessionHydrator } from "./sessionHydrator";
 import { isSessionExpired } from "./sessionExpirationService";
+import { authLogger } from "../observability/authLogger";
 
 export const sessionManager = {
   /**
@@ -45,6 +46,8 @@ export const sessionManager = {
    * @returns Resultado com status do logout na API e limpeza local.
    */
   async clear(): Promise<SessionClearResult> {
+    authLogger.info("session.clear.started");
+
     let apiLogoutSuccess = true;
 
     try {
@@ -57,6 +60,7 @@ export const sessionManager = {
     try {
       await sessionStorage.clearTokens();
     } catch (error) {
+      authLogger.error("session.clear.failed", { code: "STORAGE_ERROR" });
       return {
         success: false,
         apiLogoutSuccess,
@@ -68,10 +72,22 @@ export const sessionManager = {
       };
     }
 
+    authLogger.info("session.clear.completed", { apiLogoutSuccess });
     return {
       success: true,
       apiLogoutSuccess,
     };
+  },
+
+  /**
+   * Aplica tokens renovados após refresh bem-sucedido.
+   * Centraliza persistência de tokens; não requer sessão completa (sem user).
+   *
+   * @param tokens Tokens retornados pelo refresh (accessToken, refreshToken, expiresAt?).
+   */
+  async applyRefreshedTokens(tokens: TokensPayload): Promise<void> {
+    await sessionStorage.saveTokens(tokens);
+    authLogger.info("session.tokens_applied");
   },
 
   /**
@@ -81,9 +97,12 @@ export const sessionManager = {
    * @returns Resultado tipado com session ou erro específico.
    */
   async restore(): Promise<SessionRestoreResult> {
+    authLogger.info("session.restore.started");
+
     const tokens = await sessionStorage.getTokens();
 
     if (!tokens.accessToken) {
+      authLogger.warn("session.restore.failed", { code: "NO_STORED_TOKENS" });
       return {
         success: false,
         session: null,
@@ -95,6 +114,7 @@ export const sessionManager = {
     }
 
     if (isSessionExpired(tokens)) {
+      authLogger.warn("session.restore.failed", { code: "TOKEN_EXPIRED" });
       await sessionStorage.clearTokens();
       return {
         success: false,
@@ -109,6 +129,9 @@ export const sessionManager = {
     const hydrateResult = await sessionHydrator.hydrate(tokens);
 
     if (!hydrateResult.success) {
+      authLogger.warn("session.restore.failed", {
+        code: hydrateResult.error?.code ?? "HYDRATION_FAILED",
+      });
       await sessionStorage.clearTokens();
       return {
         success: false,
@@ -117,6 +140,7 @@ export const sessionManager = {
       };
     }
 
+    authLogger.info("session.restore.completed");
     return {
       success: true,
       session: hydrateResult.session,

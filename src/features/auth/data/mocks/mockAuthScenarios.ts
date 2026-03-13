@@ -57,6 +57,14 @@ export const MOCK_SCENARIOS: Record<string, MockScenario> = {
     onboardingStatus: "rejeitado",
     senha: MOCK_PASSWORD,
   },
+  "77777777777": {
+    documento: "77777777777",
+    nome: "Usuário Sessão Expirada",
+    email: "expirado@mock.com",
+    tipoConta: "PF",
+    onboardingStatus: "aprovado",
+    senha: MOCK_PASSWORD,
+  },
 };
 
 export function getMockScenarioByDocumento(documento: string): MockScenario | null {

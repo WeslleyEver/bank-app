@@ -23,6 +23,9 @@ import { authErrorFactory } from "../../errors";
 
 const MOCK_DELAY_MS = 300;
 const MOCK_LOGIN_ERROR_DOC = "00000000000";
+const MOCK_NETWORK_ERROR_DOC = "99999999999";
+const MOCK_TIMEOUT_DOC = "88888888888";
+const MOCK_SESSION_EXPIRED_DOC = "77777777777";
 const MOCK_TOKEN_PREFIX = "mock-access-";
 const MOCK_REFRESH_PREFIX = "mock-refresh-";
 
@@ -46,6 +49,12 @@ export const mockAuthDataSource: AuthDataSource = {
     if (doc === MOCK_LOGIN_ERROR_DOC) {
       throw authErrorFactory.invalidCredentials();
     }
+    if (doc === MOCK_NETWORK_ERROR_DOC) {
+      throw authErrorFactory.networkError();
+    }
+    if (doc === MOCK_TIMEOUT_DOC) {
+      throw authErrorFactory.networkError();
+    }
     const scenario = getMockScenarioByDocumento(data.documento);
     if (!scenario) {
       throw authErrorFactory.invalidCredentials();
@@ -54,10 +63,12 @@ export const mockAuthDataSource: AuthDataSource = {
       throw authErrorFactory.invalidCredentials();
     }
     const user = scenarioToApiUser(scenario);
+    const expiresIn = doc === MOCK_SESSION_EXPIRED_DOC ? 0 : undefined;
     return {
       accessToken: `${MOCK_TOKEN_PREFIX}${scenario.documento}`,
       refreshToken: `${MOCK_REFRESH_PREFIX}${scenario.documento}`,
       user,
+      ...(expiresIn !== undefined && { expiresIn }),
     };
   },
 
@@ -105,6 +116,9 @@ export const mockAuthDataSource: AuthDataSource = {
     if (doc === MOCK_LOGIN_ERROR_DOC) {
       throw authErrorFactory.userNotFound();
     }
+    if (doc === MOCK_NETWORK_ERROR_DOC) {
+      throw authErrorFactory.networkError();
+    }
     return { message: "Solicitação recebida com sucesso." };
   },
 
@@ -113,6 +127,9 @@ export const mockAuthDataSource: AuthDataSource = {
     const doc = extractDocumentoFromToken(accessToken);
     if (!doc) {
       throw authErrorFactory.sessionExpired();
+    }
+    if (doc === MOCK_NETWORK_ERROR_DOC || doc === MOCK_TIMEOUT_DOC) {
+      throw authErrorFactory.networkError();
     }
     const scenario = getMockScenarioByDocumento(doc);
     if (!scenario) {

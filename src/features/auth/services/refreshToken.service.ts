@@ -15,6 +15,7 @@
 
 import { authErrorFactory } from "../errors";
 import type { RefreshResult } from "../types/refresh-token.types";
+import { authLogger } from "../observability/authLogger";
 
 export const refreshTokenService = {
   /**
@@ -25,11 +26,16 @@ export const refreshTokenService = {
    * @returns RefreshResult com success: false
    */
   async refresh(): Promise<RefreshResult> {
-    return {
+    authLogger.info("refresh.started");
+
+    const result: RefreshResult = {
       success: false,
       error: authErrorFactory.sessionExpired(
         new Error("Refresh token não implementado.")
       ),
     };
+
+    authLogger.warn("refresh.failed", { code: result.error.code });
+    return result;
   },
 };

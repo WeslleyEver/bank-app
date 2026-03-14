@@ -28,3 +28,8 @@ export type {
 } from "./security-validation.types";
 
 export type { SetupPinResult, SetupPinInput } from "./security-setup.types";
+export type {
+  ValidatePinInput,
+  ValidatePinResult,
+  ValidatePinStatus,
+} from "./security-validate-pin.types";

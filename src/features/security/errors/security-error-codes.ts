@@ -1,0 +1,18 @@
+/**
+ * Códigos de erro da feature SECURITY.
+ * Base tipada — implementação completa na task 9.
+ */
+
+export const SecurityErrorCode = {
+  PIN_NOT_CONFIGURED: "PIN_NOT_CONFIGURED",
+  PIN_CONFIRMATION_MISMATCH: "PIN_CONFIRMATION_MISMATCH",
+  PIN_INVALID: "PIN_INVALID",
+  PIN_BLOCKED: "PIN_BLOCKED",
+  SECURITY_STORAGE_ERROR: "SECURITY_STORAGE_ERROR",
+  SECURITY_VALIDATION_ERROR: "SECURITY_VALIDATION_ERROR",
+  SECURITY_CHALLENGE_CANCELLED: "SECURITY_CHALLENGE_CANCELLED",
+  SECURITY_UNKNOWN_ERROR: "SECURITY_UNKNOWN_ERROR",
+} as const;
+
+export type SecurityErrorCodeType =
+  (typeof SecurityErrorCode)[keyof typeof SecurityErrorCode];

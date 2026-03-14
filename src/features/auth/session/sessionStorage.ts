@@ -1,16 +1,10 @@
 /**
  * Camada de persistência de tokens.
  * Encapsula operações de storage seguro.
- * Usa objetos para salvar/recuperar tokens (não parâmetros soltos).
- *
- * DÍVIDA TÉCNICA (AUTH -> SECURITY):
- * Este módulo depende de secureStorageService (SECURITY) para persistência segura de tokens.
- * Por contrato arquitetural, AUTH não deve depender de SECURITY; essa dependência é temporária.
- * Ideal futuro: abstrair persistência segura via interface/adapter em camada neutra (shared)
- * e injetar no bootstrap. Esta dependência não deve ser tratada como padrão aceitável.
+ * Usa a infraestrutura própria do módulo AUTH (AUTH é dono de tokens de sessão).
  */
 
-import { secureStorageService } from "@/src/features/security/services";
+import { sessionTokenStorage } from "../infra/secureTokenStorage";
 import type { StoredTokens, TokensPayload } from "./session.types";
 
 export const sessionStorage = {
@@ -19,7 +13,7 @@ export const sessionStorage = {
    * @param tokens Objeto com accessToken, refreshToken e expiresAt opcional.
    */
   async saveTokens(tokens: TokensPayload): Promise<void> {
-    await secureStorageService.setTokens(
+    await sessionTokenStorage.setTokens(
       tokens.accessToken,
       tokens.refreshToken,
       tokens.expiresAt
@@ -32,9 +26,9 @@ export const sessionStorage = {
    */
   async getTokens(): Promise<StoredTokens> {
     const [accessToken, refreshToken, expiresAt] = await Promise.all([
-      secureStorageService.getAccessToken(),
-      secureStorageService.getRefreshToken(),
-      secureStorageService.getExpiresAt(),
+      sessionTokenStorage.getAccessToken(),
+      sessionTokenStorage.getRefreshToken(),
+      sessionTokenStorage.getExpiresAt(),
     ]);
     return {
       accessToken,
@@ -47,7 +41,7 @@ export const sessionStorage = {
    * Remove todos os tokens do storage.
    */
   async clearTokens(): Promise<void> {
-    await secureStorageService.clearTokens();
+    await sessionTokenStorage.clearTokens();
   },
 
   /**

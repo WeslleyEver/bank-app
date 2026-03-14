@@ -1,13 +1,9 @@
 /**
- * ------------------------------------------------------------------
- * Secure Token Storage
- * ------------------------------------------------------------------
+ * Infraestrutura de storage seguro de tokens de sessão.
+ * Pertence ao módulo AUTH — tokens de sessão são responsabilidade de AUTH.
  *
- * Abstração para armazenamento seguro de tokens (access/refresh).
- * Usa expo-secure-store quando disponível; fallback para AsyncStorage.
- *
- * Chaves isoladas por módulo de autenticação.
- * ------------------------------------------------------------------
+ * Abstração para armazenamento seguro de access token, refresh token e expiresAt.
+ * Usa adapter injetável (ex: expo-secure-store) para permitir testes e fallback.
  */
 
 const TOKEN_KEYS = {
@@ -22,7 +18,7 @@ export interface TokenStorageAdapter {
   removeItem(key: string): Promise<void>;
 }
 
-/** Interface pública do storage de tokens */
+/** Interface pública do storage de tokens de sessão */
 export interface SecureTokenStorage {
   getAccessToken(): Promise<string | null>;
   getRefreshToken(): Promise<string | null>;
@@ -31,7 +27,7 @@ export interface SecureTokenStorage {
   clearTokens(): Promise<void>;
 }
 
-/** Implementação usando adapter (permite injetar SecureStore ou mock) */
+/** Implementação usando adapter injetável */
 export function createSecureTokenStorage(
   adapter: TokenStorageAdapter
 ): SecureTokenStorage {

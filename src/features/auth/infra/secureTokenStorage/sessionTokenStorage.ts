@@ -1,14 +1,14 @@
 /**
- * Serviço de armazenamento seguro.
- * Encapsula SecureTokenStorage para uso pelo módulo de auth.
- * Armazena access token, refresh token e expiresAt (opcional).
+ * Serviço de persistência de tokens de sessão.
+ * Encapsula tokenStorage para uso pelo sessionStorage do módulo AUTH.
  *
- * NUNCA armazena: PIN, OTP, facematch token.
+ * Armazena access token, refresh token e expiresAt.
+ * NUNCA armazena: PIN, OTP ou credenciais transacionais.
  */
 
-import { tokenStorage } from "../infra/tokenStorageInstance";
+import { tokenStorage } from "./tokenStorageInstance";
 
-export const secureStorageService = {
+export const sessionTokenStorage = {
   async getAccessToken(): Promise<string | null> {
     return tokenStorage.getAccessToken();
   },

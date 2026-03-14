@@ -1,1 +1,2 @@
-export { secureStorageService } from "./secure-storage.service";
+export { requestTransactionalChallenge } from "./requestTransactionalChallenge";
+export { clearSecurityState } from "./clearSecurityState";

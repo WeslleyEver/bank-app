@@ -1,15 +1,26 @@
 /**
- * Módulo de segurança - Secure Token Storage
+ * API pública da feature SECURITY.
+ * Única porta de entrada para consumo externo.
  *
- * Uso: importar tokenStorage ou secureStorageService
+ * SECURITY é responsável por:
+ * - credencial transacional
+ * - challenge transacional
+ * - autorização de operação sensível
  *
- * Requer: npx expo install expo-secure-store
- * Para fallback em testes, use createSecureTokenStorage(inMemoryAdapter)
+ * SECURITY não é responsável por tokens de sessão (AUTH).
  */
 
-export { tokenStorage } from "./infra/tokenStorageInstance";
+export { useSecurityStore } from "./store";
+export { useSecurity } from "./hooks";
+export { requestTransactionalChallenge, clearSecurityState } from "./services";
+export { SecurityErrorCode } from "./errors";
 
-export { createSecureTokenStorage } from "./infra/SecureTokenStorage";
-export type { SecureTokenStorage, TokenStorageAdapter } from "./infra/SecureTokenStorage";
-export { inMemoryAdapter } from "./infra/adapters/InMemoryAdapter";
-export { secureStorageService } from "./services";
+export type {
+  SecurityMethod,
+  SecurityState,
+  SecurityChallengeType,
+  SecurityChallengeRequest,
+  SecurityChallengeResult,
+} from "./types";
+
+export type { SecurityErrorCodeType } from "./errors";

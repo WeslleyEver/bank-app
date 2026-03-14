@@ -1,6 +1,5 @@
 /**
- * Instância do token storage.
- * Arquivo isolado para evitar dependência circular entre index e secure-storage.service.
+ * Instância do token storage para uso pela camada session do AUTH.
  */
 
 import { createSecureTokenStorage } from "./SecureTokenStorage";

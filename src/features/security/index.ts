@@ -11,7 +11,7 @@
  */
 
 export { useSecurityStore } from "./store";
-export { useSecurity, usePinSetup, usePinValidate } from "./hooks";
+export { useSecurity, usePinSetup, usePinValidate, useTransactionalChallenge } from "./hooks";
 export {
   requestTransactionalChallenge,
   clearSecurityState,
@@ -20,6 +20,7 @@ export {
 export { SecurityErrorCode } from "./errors";
 export { PinSetupScreen } from "./presentation/screens/PinSetupScreen";
 export { PinValidationScreen } from "./presentation/screens/PinValidationScreen";
+export { TransactionalChallengeScreen } from "./presentation/screens/TransactionalChallengeScreen";
 
 export type {
   SecurityMethod,

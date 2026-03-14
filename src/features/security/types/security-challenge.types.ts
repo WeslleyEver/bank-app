@@ -20,6 +20,8 @@ export type SecurityChallengeType =
 export interface SecurityChallengeRequest {
   /** Tipo da operação */
   type: SecurityChallengeType;
+  /** ID da conta (obtido pela feature chamadora de AUTH/sessão) */
+  accountId: string;
   /** Motivo legível (opcional) */
   reason?: string;
   /** Metadados da operação (não sensíveis) */

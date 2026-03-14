@@ -155,7 +155,7 @@ describe("security.store — Atualizações", () => {
   });
 
   it("define e limpa currentChallenge", () => {
-    const challenge = { type: "PIX_TRANSFER" as const };
+    const challenge = { type: "PIX_TRANSFER" as const, accountId: "acc-1" };
     useSecurityStore.getState().setCurrentChallenge(challenge);
     expect(useSecurityStore.getState().currentChallenge).toEqual(challenge);
 
@@ -185,6 +185,7 @@ describe("security.store — Reset local", () => {
     useSecurityStore.getState().setLastErrorCode(SecurityErrorCode.PIN_BLOCKED);
     useSecurityStore.getState().setCurrentChallenge({
       type: "PIX_TRANSFER",
+      accountId: "acc-1",
     });
 
     useSecurityStore.getState().resetLocalState();

@@ -26,9 +26,11 @@ export const SecurityErrorCode = {
   STORAGE_READ_FAILED: "STORAGE_READ_FAILED",
   /** Falha na escrita do storage seguro */
   STORAGE_WRITE_FAILED: "STORAGE_WRITE_FAILED",
-  /** Erro técnico genérico */
-  VALIDATION_ERROR: "VALIDATION_ERROR",
-  /** Erro desconhecido */
+  /** Dados persistidos inválidos/corrompidos */
+  STORAGE_DATA_INVALID: "STORAGE_DATA_INVALID",
+  /** Falha na execução do pipeline de validação (não confundir com PIN errado) */
+  VALIDATION_EXECUTION_FAILED: "VALIDATION_EXECUTION_FAILED",
+  /** Erro desconhecido — fallback quando não há mapeamento explícito */
   UNKNOWN_ERROR: "UNKNOWN_ERROR",
 } as const;
 

@@ -28,7 +28,7 @@ export async function readPinMaterial(
     }
     const parsed = JSON.parse(raw) as unknown;
     if (!isValidMaterial(parsed)) {
-      return { success: false, errorCode: SecurityErrorCode.STORAGE_READ_FAILED };
+      return { success: false, errorCode: SecurityErrorCode.STORAGE_DATA_INVALID };
     }
     return { success: true, data: parsed };
   } catch {

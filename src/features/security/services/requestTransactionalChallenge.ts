@@ -5,6 +5,7 @@
  */
 
 import { hasPinForAccount } from "../infra/pinStorage";
+import { logSecurityEvent } from "../observability/securityLogger";
 import { hydrateSecurityStore } from "./hydrateSecurityStore";
 import { validatePin } from "./validatePin.service";
 import { useSecurityStore } from "../store";
@@ -63,6 +64,7 @@ export async function requestTransactionalChallenge(
 
   const hasPin = await hasPinForAccount(accountId);
   if (!hasPin) {
+    logSecurityEvent("challenge_not_configured", { operation: request.type });
     return { status: "not_configured" };
   }
 
@@ -71,10 +73,12 @@ export async function requestTransactionalChallenge(
   if (isBlocked && blockUntil) {
     const now = new Date();
     if (new Date(blockUntil) > now) {
+      logSecurityEvent("challenge_blocked", { operation: request.type }, "warn");
       return { status: "blocked", until: blockUntil };
     }
   }
 
+  logSecurityEvent("challenge_started", { operation: request.type });
   useSecurityStore.getState().setCurrentChallenge(request);
   useSecurityStore.getState().setLastErrorCode(null);
 
@@ -95,6 +99,7 @@ export async function resolveTransactionalChallenge(
   const resolver = pendingResolve;
   if (!resolver) {
     useSecurityStore.getState().setCurrentChallenge(null);
+    logSecurityEvent("challenge_unavailable", { code: "CHALLENGE_NOT_ACTIVE" }, "warn");
     return { status: "unavailable", reason: "CHALLENGE_NOT_ACTIVE" };
   }
 
@@ -103,6 +108,23 @@ export async function resolveTransactionalChallenge(
     validateResult,
     accountId
   );
+
+  if (challengeResult.status === "authorized") {
+    logSecurityEvent("challenge_authorized");
+  } else if (challengeResult.status === "denied") {
+    logSecurityEvent("challenge_denied", {
+      code: "errorCode" in challengeResult ? challengeResult.errorCode : undefined,
+    }, "info");
+  } else if (challengeResult.status === "blocked") {
+    logSecurityEvent("challenge_blocked", { until: challengeResult.until }, "warn");
+  } else if (challengeResult.status === "not_configured") {
+    logSecurityEvent("challenge_not_configured");
+  } else if (challengeResult.status === "unavailable") {
+    logSecurityEvent("challenge_unavailable", {
+      code: "errorCode" in challengeResult ? challengeResult.errorCode : undefined,
+    }, "error");
+  }
+  // cancelled é logado em cancelTransactionalChallenge
 
   useSecurityStore.getState().setCurrentChallenge(null);
   clearPending();
@@ -116,6 +138,7 @@ export async function resolveTransactionalChallenge(
  */
 export function cancelTransactionalChallenge(): SecurityChallengeResult {
   const resolver = pendingResolve;
+  logSecurityEvent("challenge_cancelled");
   useSecurityStore.getState().setCurrentChallenge(null);
   useSecurityStore.getState().setLastErrorCode(null);
   clearPending();

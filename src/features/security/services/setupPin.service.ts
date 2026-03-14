@@ -6,6 +6,7 @@
 
 import { persistPinForAccount } from "../infra/pinStorage";
 import { useSecurityStore } from "../store";
+import { logSecurityEvent } from "../observability/securityLogger";
 import { hydrateSecurityStore } from "./hydrateSecurityStore";
 import { PIN_LENGTH } from "../constants";
 import { SecurityErrorCode } from "../errors";
@@ -25,14 +26,17 @@ export async function setupPin(input: SetupPinInput): Promise<SetupPinResult> {
   const { pin, confirmation, accountId } = input;
 
   if (!validatePinFormat(pin)) {
+    logSecurityEvent("pin_setup_failed", { code: SecurityErrorCode.PIN_FORMAT_INVALID }, "info");
     return { success: false, errorCode: SecurityErrorCode.PIN_FORMAT_INVALID };
   }
 
   if (!validatePinFormat(confirmation)) {
+    logSecurityEvent("pin_setup_failed", { code: SecurityErrorCode.PIN_FORMAT_INVALID }, "info");
     return { success: false, errorCode: SecurityErrorCode.PIN_FORMAT_INVALID };
   }
 
   if (pin !== confirmation) {
+    logSecurityEvent("pin_setup_failed", { code: SecurityErrorCode.PIN_CONFIRMATION_MISMATCH }, "info");
     return {
       success: false,
       errorCode: SecurityErrorCode.PIN_CONFIRMATION_MISMATCH,
@@ -42,15 +46,15 @@ export async function setupPin(input: SetupPinInput): Promise<SetupPinResult> {
   const persistResult = await persistPinForAccount(accountId, pin);
 
   if (!persistResult.success) {
-    return {
-      success: false,
-      errorCode:
-        persistResult.errorCode === SecurityErrorCode.STORAGE_WRITE_FAILED
-          ? SecurityErrorCode.STORAGE_WRITE_FAILED
-          : SecurityErrorCode.UNKNOWN_ERROR,
-    };
+    const code =
+      persistResult.errorCode === SecurityErrorCode.STORAGE_WRITE_FAILED
+        ? SecurityErrorCode.STORAGE_WRITE_FAILED
+        : SecurityErrorCode.UNKNOWN_ERROR;
+    logSecurityEvent("pin_setup_failed", { code }, "error");
+    return { success: false, errorCode: code };
   }
 
+  logSecurityEvent("pin_setup_success");
   await hydrateSecurityStore(accountId);
   useSecurityStore.getState().setLastErrorCode(null);
 

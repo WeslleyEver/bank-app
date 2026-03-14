@@ -17,7 +17,12 @@ export {
   clearSecurityState,
   type ClearSecurityStateOptions,
 } from "./services";
-export { SecurityErrorCode } from "./errors";
+export {
+  SecurityErrorCode,
+  getSecurityErrorDescriptor,
+  createSecurityError,
+  mapUnknownToSecurityError,
+} from "./errors";
 export { PinSetupScreen } from "./presentation/screens/PinSetupScreen";
 export { PinValidationScreen } from "./presentation/screens/PinValidationScreen";
 export { TransactionalChallengeScreen } from "./presentation/screens/TransactionalChallengeScreen";

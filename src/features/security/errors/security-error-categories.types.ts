@@ -25,4 +25,8 @@ export interface SecurityErrorDescriptor {
   category: SecurityErrorCategory;
   /** Indica se é erro de credencial (não confundir com técnico) */
   isCredentialError: boolean;
+  /** Indica se retry faz sentido para o usuário */
+  isRetryable: boolean;
+  /** Chave estável para UI mapear mensagem — nunca texto sensível */
+  messageKey: string;
 }

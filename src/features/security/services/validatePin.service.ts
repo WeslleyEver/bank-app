@@ -9,10 +9,11 @@ import {
   updatePinMetadata,
   verifyPinAgainstMaterial,
 } from "../infra/pinStorage";
+import { logSecurityEvent } from "../observability/securityLogger";
 import { useSecurityStore } from "../store";
 import { hydrateSecurityStore } from "./hydrateSecurityStore";
 import { PIN_LENGTH, MAX_INVALID_ATTEMPTS, BLOCK_DURATION_SECONDS } from "../constants";
-import { SecurityErrorCode } from "../errors";
+import { SecurityErrorCode, type SecurityErrorCodeType } from "../errors";
 import type { ValidatePinInput, ValidatePinResult } from "../types";
 
 const PIN_FORMAT_REGEX = /^\d{6}$/;
@@ -44,9 +45,15 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
 
   const readResult = await readPinMaterial(accountId);
   if (!readResult.success) {
+    const code = readResult.errorCode as SecurityErrorCodeType;
+    const event =
+      code === SecurityErrorCode.STORAGE_DATA_INVALID
+        ? "storage_data_invalid"
+        : "storage_read_failed";
+    logSecurityEvent(event, { code }, "error");
     return {
       status: "unavailable",
-      errorCode: SecurityErrorCode.STORAGE_READ_FAILED,
+      errorCode: readResult.errorCode as SecurityErrorCodeType,
     };
   }
 
@@ -68,6 +75,7 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
       blockUntil: null,
     });
     if (!clearResult.success) {
+      logSecurityEvent("storage_write_failed", { code: SecurityErrorCode.STORAGE_WRITE_FAILED }, "error");
       return {
         status: "unavailable",
         errorCode: SecurityErrorCode.STORAGE_WRITE_FAILED,
@@ -97,9 +105,12 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
   try {
     isValid = await verifyPinAgainstMaterial(pin, material);
   } catch {
+    logSecurityEvent("validation_execution_failed", {
+      code: SecurityErrorCode.VALIDATION_EXECUTION_FAILED,
+    }, "error");
     return {
       status: "unavailable",
-      errorCode: SecurityErrorCode.UNKNOWN_ERROR,
+      errorCode: SecurityErrorCode.VALIDATION_EXECUTION_FAILED,
     };
   }
 
@@ -109,6 +120,7 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
       blockUntil: null,
     });
     if (!updateResult.success) {
+      logSecurityEvent("storage_write_failed", { code: SecurityErrorCode.STORAGE_WRITE_FAILED }, "error");
       return {
         status: "unavailable",
         errorCode: SecurityErrorCode.STORAGE_WRITE_FAILED,
@@ -130,6 +142,7 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
   });
 
   if (!updateResult.success) {
+    logSecurityEvent("storage_write_failed", { code: SecurityErrorCode.STORAGE_WRITE_FAILED }, "error");
     return {
       status: "unavailable",
       errorCode: SecurityErrorCode.STORAGE_WRITE_FAILED,
@@ -143,6 +156,7 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
   );
 
   if (limitReached) {
+    logSecurityEvent("validation_block_activated", { blockDurationMs: BLOCK_DURATION_SECONDS * 1000 }, "warn");
     return {
       status: "blocked",
       blockUntil: newBlockUntil!,
@@ -151,6 +165,7 @@ export async function validatePin(input: ValidatePinInput): Promise<ValidatePinR
   }
 
   const remainingAttempts = MAX_INVALID_ATTEMPTS - newFailedAttempts;
+  logSecurityEvent("validation_invalid", { remainingAttempts }, "info");
   return {
     status: "invalid",
     errorCode: SecurityErrorCode.PIN_INVALID,

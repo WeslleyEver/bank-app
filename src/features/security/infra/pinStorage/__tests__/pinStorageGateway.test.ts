@@ -3,6 +3,18 @@
  * Cobre: persistência, isolamento, limpeza, segurança do material.
  */
 
+import {
+  readPinMaterial,
+  writePinMaterial,
+  persistPinForAccount,
+  updatePinMetadata,
+  clearPinMaterial,
+  hasPinForAccount,
+} from "../index";
+import { SecurityErrorCode } from "../../../errors";
+import { clearSecurityState } from "../../../services/clearSecurityState";
+import type { PinSecurityMaterial } from "../pin-storage.types";
+
 const mockStore = new Map<string, string>();
 
 jest.mock("../pinSecureStoreAdapter", () => ({
@@ -30,17 +42,7 @@ jest.mock("expo-crypto", () => ({
   CryptoDigestAlgorithm: { SHA256: "SHA256" },
 }));
 
-import {
-  readPinMaterial,
-  writePinMaterial,
-  persistPinForAccount,
-  updatePinMetadata,
-  clearPinMaterial,
-  hasPinForAccount,
-} from "../index";
-import { clearSecurityState } from "../../../services/clearSecurityState";
-
-const createValidMaterial = () => ({
+const createValidMaterial = (): PinSecurityMaterial => ({
   hash: "hashed-pin-value",
   salt: "salt-hex",
   algorithmVersion: 1,
@@ -185,6 +187,17 @@ describe("pinStorageGateway — Segurança", () => {
     expect(parsed.metadata).toHaveProperty("failedAttempts");
     expect(parsed.metadata).toHaveProperty("blockUntil");
     expect(parsed.metadata).toHaveProperty("createdAt");
+  });
+});
+
+describe("pinStorageGateway — Dados inválidos", () => {
+  it("retorna STORAGE_DATA_INVALID quando material persistido é malformado", async () => {
+    mockStore.set("security.pin.material.bad", JSON.stringify({ invalid: "structure" }));
+    const result = await readPinMaterial("bad");
+    expect(result.success).toBe(false);
+    expect(result.success === false && result.errorCode).toBe(
+      SecurityErrorCode.STORAGE_DATA_INVALID
+    );
   });
 });
 

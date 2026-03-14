@@ -10,6 +10,9 @@ const SETUP_ERROR_MESSAGES: Partial<Record<SecurityErrorCodeType, string>> = {
   [SecurityErrorCode.PIN_FORMAT_INVALID]: "O PIN deve ter exatamente 6 dígitos numéricos.",
   [SecurityErrorCode.PIN_CONFIRMATION_MISMATCH]: "O PIN e a confirmação não conferem. Tente novamente.",
   [SecurityErrorCode.STORAGE_WRITE_FAILED]: "Não foi possível salvar o PIN. Tente novamente mais tarde.",
+  [SecurityErrorCode.STORAGE_DATA_INVALID]:
+    "Dados de segurança inválidos. Entre em contato com o suporte.",
+  [SecurityErrorCode.VALIDATION_EXECUTION_FAILED]: "Ocorreu um erro. Tente novamente.",
   [SecurityErrorCode.UNKNOWN_ERROR]: "Ocorreu um erro. Tente novamente.",
 };
 

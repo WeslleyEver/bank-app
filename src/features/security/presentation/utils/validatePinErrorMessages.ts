@@ -17,6 +17,10 @@ const VALIDATION_ERROR_MESSAGES: Partial<Record<SecurityErrorCodeType, string>> 
     "Não foi possível verificar o PIN. Tente novamente mais tarde.",
   [SecurityErrorCode.STORAGE_WRITE_FAILED]:
     "Ocorreu um erro ao processar. Tente novamente mais tarde.",
+  [SecurityErrorCode.STORAGE_DATA_INVALID]:
+    "Dados de segurança inválidos. Entre em contato com o suporte.",
+  [SecurityErrorCode.VALIDATION_EXECUTION_FAILED]:
+    "Não foi possível verificar o PIN. Tente novamente mais tarde.",
   [SecurityErrorCode.UNKNOWN_ERROR]: "Ocorreu um erro. Tente novamente.",
 };
 

@@ -1,8 +1,8 @@
 /**
  * Solicita challenge transacional para autorizar operação sensível.
  *
- * PLACEHOLDER ARQUITETURAL (TASK 1):
- * Não implementa fluxo real. Retorna imediatamente `unavailable`.
+ * PLACEHOLDER ARQUITETURAL (TASK 1-2):
+ * Não implementa fluxo real. Retorna not_configured (sem PIN configurado).
  * Implementação funcional nas tasks 7–8.
  */
 
@@ -13,13 +13,10 @@ import type {
 
 /**
  * Placeholder: sempre retorna not_configured.
- * O fluxo real será implementado nas tasks de criação/validação de PIN e challenge.
+ * Domínio definido na TASK 2; fluxo real nas tasks de criação/validação de PIN e challenge.
  */
 export async function requestTransactionalChallenge(
   _request: SecurityChallengeRequest
 ): Promise<SecurityChallengeResult> {
-  return {
-    status: "unavailable",
-    reason: "TASK1_PLACEHOLDER",
-  };
+  return { status: "not_configured" };
 }

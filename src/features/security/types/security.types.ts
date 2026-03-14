@@ -1,7 +1,10 @@
 /**
  * Tipos estruturais da feature SECURITY.
- * Preparado para evolução futura (PIN, biometria, OTP).
+ * v1 = PIN; preparado para biometria e OTP.
  */
+
+import type { SecurityChallengeRequest } from "./security-challenge.types";
+import type { SecurityErrorCodeType } from "../errors";
 
 /**
  * Métodos de autenticação transacional suportados.
@@ -10,20 +13,22 @@
 export type SecurityMethod = "PIN" | "BIOMETRY" | "OTP";
 
 /**
- * Estado estrutural da feature SECURITY.
- * Placeholder mínimo — detalhes serão preenchidos nas tasks 2–4.
+ * Estado da feature SECURITY refletido na store.
+ * Nunca guarda segredo bruto (PIN, hash, salt).
  */
 export interface SecurityState {
-  /** Indica se credencial transacional está configurada */
+  /** Usuário tem credencial transacional configurada */
   hasPin: boolean;
-  /** Indica se challenge atual foi validado com sucesso */
+  /** Challenge atual foi validado com sucesso */
   isPinValidated: boolean;
-  /** Tentativas inválidas consecutivas (placeholder) */
+  /** Tentativas inválidas consecutivas (v1: max 3) */
   failedAttempts: number;
-  /** Indica bloqueio temporário ativo */
+  /** Bloqueio temporário ativo (v1: 5 min) */
   isBlocked: boolean;
   /** Timestamp ISO até quando o bloqueio está ativo */
   blockUntil: string | null;
-  /** Challenge em andamento (placeholder) */
-  currentChallenge: unknown | null;
+  /** Challenge em andamento, se houver */
+  currentChallenge: SecurityChallengeRequest | null;
+  /** Último código de erro, se houver */
+  lastErrorCode: SecurityErrorCodeType | null;
 }

@@ -14,6 +14,7 @@ const initialState: SecurityState = {
   isBlocked: false,
   blockUntil: null,
   currentChallenge: null,
+  lastErrorCode: null,
 };
 
 export const useSecurityStore = create<SecurityState>(() => initialState);

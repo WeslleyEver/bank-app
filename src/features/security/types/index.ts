@@ -8,4 +8,26 @@ export type {
   SecurityChallengeRequest,
 } from "./security-challenge.types";
 
-export type { SecurityChallengeResult } from "./security-result.types";
+export type {
+  SecurityChallengeResult,
+  SecurityChallengeStatus,
+  AuthorizedResult,
+  CancelledResult,
+  DeniedResult,
+  BlockedResult,
+  NotConfiguredResult,
+  UnavailableResult,
+} from "./security-result.types";
+
+export type {
+  TransactionalCredentialMethod,
+  CredentialConfigurationStatus,
+  SecurityCredentialStatus,
+  UserWithPinStatus,
+} from "./security-credential.types";
+
+export type {
+  PinValidationResult,
+  InvalidAttemptsState,
+  BlockState,
+} from "./security-validation.types";

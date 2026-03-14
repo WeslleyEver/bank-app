@@ -21,6 +21,14 @@ export type {
   SecurityChallengeType,
   SecurityChallengeRequest,
   SecurityChallengeResult,
+  SecurityChallengeStatus,
+  TransactionalCredentialMethod,
+  CredentialConfigurationStatus,
+  SecurityCredentialStatus,
+  UserWithPinStatus,
+  PinValidationResult,
+  InvalidAttemptsState,
+  BlockState,
 } from "./types";
 
-export type { SecurityErrorCodeType } from "./errors";
+export type { SecurityErrorCodeType, SecurityErrorCategory, SecurityErrorDescriptor } from "./errors";

@@ -11,13 +11,14 @@
  */
 
 export { useSecurityStore } from "./store";
-export { useSecurity } from "./hooks";
+export { useSecurity, usePinSetup } from "./hooks";
 export {
   requestTransactionalChallenge,
   clearSecurityState,
   type ClearSecurityStateOptions,
 } from "./services";
 export { SecurityErrorCode } from "./errors";
+export { PinSetupScreen } from "./presentation/screens/PinSetupScreen";
 
 export type {
   SecurityMethod,
@@ -31,6 +32,8 @@ export type {
   PinValidationResult,
   InvalidAttemptsState,
   BlockState,
+  SetupPinResult,
+  SetupPinInput,
 } from "./types";
 
 export type { SecurityErrorCodeType, SecurityErrorCategory, SecurityErrorDescriptor } from "./errors";

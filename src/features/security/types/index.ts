@@ -26,3 +26,5 @@ export type {
   InvalidAttemptsState,
   BlockState,
 } from "./security-validation.types";
+
+export type { SetupPinResult, SetupPinInput } from "./security-setup.types";

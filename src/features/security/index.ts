@@ -21,6 +21,7 @@ export { SecurityErrorCode } from "./errors";
 export { PinSetupScreen } from "./presentation/screens/PinSetupScreen";
 export { PinValidationScreen } from "./presentation/screens/PinValidationScreen";
 export { TransactionalChallengeScreen } from "./presentation/screens/TransactionalChallengeScreen";
+export { GlobalTransactionalChallengeModal } from "./presentation/components/GlobalTransactionalChallengeModal";
 
 export type {
   SecurityMethod,

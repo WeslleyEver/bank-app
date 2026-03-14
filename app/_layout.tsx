@@ -14,10 +14,12 @@ import "react-native-reanimated";
 
 import { initializeHttpClient } from "@/src/bootstrap";
 import { useAuthStore } from "@/src/features/auth";
+import { GlobalTransactionalChallengeModal } from "@/src/features/security";
 
 const PROTECTED_ROOT_SEGMENTS = [
   "(tabs)",
   "pix",
+  "security",
   "transactions",
   "user",
   "settings",
@@ -96,6 +98,7 @@ export default function RootLayout() {
         />
       </Stack>
 
+      <GlobalTransactionalChallengeModal />
       <StatusBar style="dark" />
     </ThemeProvider>
   );
